@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="2gv-lR-3lY">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Capture View Controller-->
+        <scene sceneID="cIq-hR-phz">
+            <objects>
+                <viewController id="2gv-lR-3lY" customClass="CaptureViewController" customModule="AVFoundationExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="i4f-VF-mFq"/>
+                        <viewControllerLayoutGuide type="bottom" id="H8D-gK-X1k"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6So-hb-vAN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B1o-lf-L4Z">
+                                <rect key="frame" x="0.0" y="20" width="320" height="503"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="er7-Pf-Bcu">
+                                <rect key="frame" x="0.0" y="523" width="320" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="V3X-Ew-n3Z"/>
+                                </constraints>
+                                <state key="normal" title="Capture"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xvz-lj-hTx">
+                                <rect key="frame" x="20" y="40" width="43.5" height="25.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="ChalkboardSE-Regular" family="Chalkboard SE" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="er7-Pf-Bcu" firstAttribute="centerX" secondItem="6So-hb-vAN" secondAttribute="centerX" id="5Zl-UF-zKP"/>
+                            <constraint firstItem="Xvz-lj-hTx" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" constant="20" id="JXw-AR-mfL"/>
+                            <constraint firstItem="Xvz-lj-hTx" firstAttribute="top" secondItem="i4f-VF-mFq" secondAttribute="bottom" constant="20" id="Qa7-5s-gRp"/>
+                            <constraint firstAttribute="trailing" secondItem="B1o-lf-L4Z" secondAttribute="trailing" id="iTa-1d-ToJ"/>
+                            <constraint firstAttribute="bottom" secondItem="er7-Pf-Bcu" secondAttribute="bottom" id="mPF-1c-SaF"/>
+                            <constraint firstItem="B1o-lf-L4Z" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" id="mRe-M4-iHw"/>
+                            <constraint firstItem="er7-Pf-Bcu" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" id="maj-bg-sKY"/>
+                            <constraint firstItem="er7-Pf-Bcu" firstAttribute="top" secondItem="B1o-lf-L4Z" secondAttribute="bottom" id="wOZ-Si-YyL"/>
+                            <constraint firstItem="B1o-lf-L4Z" firstAttribute="top" secondItem="i4f-VF-mFq" secondAttribute="bottom" id="yve-cj-XSm"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="Fch-YW-RW5">
+                        <barButtonItem key="rightBarButtonItem" title="button" id="cJC-YF-Wo3">
+                            <connections>
+                                <action selector="switchCameraBtnPressed:" destination="2gv-lR-3lY" id="Zuo-DM-8jV"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="captureButton" destination="er7-Pf-Bcu" id="g6I-kx-Pcg"/>
+                        <outlet property="captureView" destination="B1o-lf-L4Z" id="sRz-Uh-KZC"/>
+                        <outlet property="recoderTimeLabel" destination="Xvz-lj-hTx" id="0dt-7i-9bA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2J9-33-IMC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="549.375" y="79.225352112676063"/>
+        </scene>
+    </scenes>
+</document>
