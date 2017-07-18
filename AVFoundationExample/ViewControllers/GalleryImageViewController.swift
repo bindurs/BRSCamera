@@ -25,7 +25,7 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
     var playDuration : CMTime?
     var playerLayer : AVPlayerLayer?
     let progressview = UIProgressView()
-    
+    var pauseTime : CMTime?
     @IBOutlet var imageCollectionView: UICollectionView!
     
     override func viewDidLoad() {
@@ -33,6 +33,7 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
         
         // Do any additional setup after loading the view.
         
+        pauseTime = CMTimeMake(0, 1)
         var albumFound = false
         
         let fetchOptions = PHFetchOptions()
@@ -50,6 +51,10 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
             
             print(photosAsset.count)
             imageCollectionView.reloadData()
+            
+            let indexPath = IndexPath(row: photosAsset.count-1, section: 0)
+            
+            imageCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.centeredHorizontally, animated: false)
         }
         
     }
@@ -118,43 +123,49 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
     
     @IBAction func playButtonClicked(_ sender: UIButton) {
         
-        sender.isEnabled = false;
         let indexPath = IndexPath(row: sender.tag, section: 0)
-        let cell = imageCollectionView.cellForItem(at: indexPath)
+        let cell: ImageCollectionViewCell = imageCollectionView.cellForItem(at: indexPath) as! ImageCollectionViewCell
         
-        let asset = AVURLAsset(url: localVideoUrl as URL)
-        
-        let playerItem:AVPlayerItem = AVPlayerItem(asset: asset)
-        
-        player = AVPlayer(playerItem: playerItem)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishPlaying(play:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player.currentItem)
-        
-        playerLayer = AVPlayerLayer(player: player)
-        playerLayer?.frame = self.view.bounds
-        cell?.layer.addSublayer(playerLayer!)
-        //
-        //        let playbackSlider = UISlider(frame:CGRect(x:10, y:UIScreen.main.bounds.size.height-30, width:300, height:20))
-        //        playbackSlider.isContinuous=true
-        //        playbackSlider.tintColor = UIColor.red
-        //        playbackSlider.thumbTintColor = UIColor.blue
-        progressview.isHidden = false
-        if(progressview != nil) {
-            progressview.removeFromSuperview()
+        if player.rate != 0 && player.error == nil {
+            
+            player.pause()
+            pauseTime = player.currentTime()
+            cell.bringSubview(toFront: cell.playButton)
+
+        } else {
+            
+            if (CMTimeGetSeconds(pauseTime!) != 0) {
+                
+                player.seek(to: pauseTime!, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+                player.play()
+                
+            } else {
+                let asset = AVURLAsset(url: localVideoUrl as URL)
+                
+                let playerItem = AVPlayerItem(asset: asset)
+                
+                player = AVPlayer(playerItem: playerItem)
+                
+                NotificationCenter.default.addObserver(self, selector: #selector(itemDidFinishPlaying(play:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player.currentItem)
+                
+                playerLayer = AVPlayerLayer(player: player)
+                playerLayer?.frame = self.view.bounds
+                cell.layer.addSublayer(playerLayer!)
+                
+                progressview.isHidden = false
+                
+                progressview.frame = CGRect(x:10, y:UIScreen.main.bounds.size.height-30, width:UIScreen.main.bounds.width-20, height:20)
+                progressview.progress = 0
+                progressview.progressTintColor = UIColor.red
+                progressview.trackTintColor = UIColor.blue
+                cell.addSubview(progressview)
+                
+                player.play()
+                
+                timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(syncScrubber), userInfo: nil, repeats: true)
+                timer?.fire()
+            }
         }
-        progressview.frame = CGRect(x:10, y:UIScreen.main.bounds.size.height-30, width:UIScreen.main.bounds.width-20, height:20)
-        progressview.progress = 0
-        progressview.progressTintColor = UIColor.red
-        progressview.trackTintColor = UIColor.blue
-        
-        
-        cell?.addSubview(progressview)
-        
-        player.play()
-        
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(syncScrubber), userInfo: nil, repeats: true)
-        timer?.fire()
-        
     }
     
     //MARK: - Methods
@@ -188,15 +199,18 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
     
     func itemDidFinishPlaying(play:AVPlayer) {
         
+        pauseTime = CMTimeMake(0, 1)
+        player.pause()
+        player.replaceCurrentItem(with: nil)
+        playerLayer?.removeFromSuperlayer()
+        
         if (timer != nil) {
             progressview.isHidden = true
             progressview.removeFromSuperview()
             timer?.invalidate()
             timer=nil
         }
-        player.pause()
-        player.replaceCurrentItem(with: nil)
-        playerLayer?.removeFromSuperlayer()
+        
     }
     
     //MARK: - Scrollview Delegate
