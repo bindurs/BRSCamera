@@ -12,9 +12,11 @@
 		F40D46021F0E0A0D00752B61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F40D46011F0E0A0D00752B61 /* Assets.xcassets */; };
 		F40D46051F0E0A0D00752B61 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F40D46031F0E0A0D00752B61 /* LaunchScreen.storyboard */; };
 		F40D460E1F0E0A2D00752B61 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F40D460D1F0E0A2D00752B61 /* AVFoundation.framework */; };
-		F40D46121F0E2D7500752B61 /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40D46111F0E2D7500752B61 /* CaptureViewController.swift */; };
 		F40D46141F0E422400752B61 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F40D46131F0E422400752B61 /* Photos.framework */; };
-		F40D46161F0E585200752B61 /* CameraFocusSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40D46151F0E585200752B61 /* CameraFocusSquareView.swift */; };
+		F43994AA1F160B2800096217 /* CameraFocusSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994A61F160B2800096217 /* CameraFocusSquareView.swift */; };
+		F43994AB1F160B2800096217 /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994A81F160B2800096217 /* CaptureViewController.swift */; };
+		F43994AC1F160B2800096217 /* GalleryImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994A91F160B2800096217 /* GalleryImageViewController.swift */; };
+		F43994AE1F160B4F00096217 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994AD1F160B4F00096217 /* ImageCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,9 +27,11 @@
 		F40D46041F0E0A0D00752B61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F40D46061F0E0A0D00752B61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F40D460D1F0E0A2D00752B61 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		F40D46111F0E2D7500752B61 /* CaptureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureViewController.swift; sourceTree = "<group>"; };
 		F40D46131F0E422400752B61 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
-		F40D46151F0E585200752B61 /* CameraFocusSquareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFocusSquareView.swift; sourceTree = "<group>"; };
+		F43994A61F160B2800096217 /* CameraFocusSquareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFocusSquareView.swift; sourceTree = "<group>"; };
+		F43994A81F160B2800096217 /* CaptureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureViewController.swift; sourceTree = "<group>"; };
+		F43994A91F160B2800096217 /* GalleryImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryImageViewController.swift; sourceTree = "<group>"; };
+		F43994AD1F160B4F00096217 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,12 +68,13 @@
 			isa = PBXGroup;
 			children = (
 				F40D45FA1F0E0A0C00752B61 /* AppDelegate.swift */,
-				F40D45FE1F0E0A0D00752B61 /* Main.storyboard */,
-				F40D46011F0E0A0D00752B61 /* Assets.xcassets */,
 				F40D46031F0E0A0D00752B61 /* LaunchScreen.storyboard */,
+				F40D45FE1F0E0A0D00752B61 /* Main.storyboard */,
+				F43994A41F160B2800096217 /* Cells */,
+				F43994A51F160B2800096217 /* HelperClasses */,
+				F43994A71F160B2800096217 /* ViewControllers */,
+				F40D46011F0E0A0D00752B61 /* Assets.xcassets */,
 				F40D46061F0E0A0D00752B61 /* Info.plist */,
-				F40D46111F0E2D7500752B61 /* CaptureViewController.swift */,
-				F40D46151F0E585200752B61 /* CameraFocusSquareView.swift */,
 			);
 			path = AVFoundationExample;
 			sourceTree = "<group>";
@@ -81,6 +86,31 @@
 				F40D460D1F0E0A2D00752B61 /* AVFoundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F43994A41F160B2800096217 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F43994AD1F160B4F00096217 /* ImageCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		F43994A51F160B2800096217 /* HelperClasses */ = {
+			isa = PBXGroup;
+			children = (
+				F43994A61F160B2800096217 /* CameraFocusSquareView.swift */,
+			);
+			path = HelperClasses;
+			sourceTree = "<group>";
+		};
+		F43994A71F160B2800096217 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				F43994A81F160B2800096217 /* CaptureViewController.swift */,
+				F43994A91F160B2800096217 /* GalleryImageViewController.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -110,7 +140,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Xminds;
 				TargetAttributes = {
 					F40D45F61F0E0A0C00752B61 = {
@@ -157,8 +187,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F40D45FB1F0E0A0C00752B61 /* AppDelegate.swift in Sources */,
-				F40D46121F0E2D7500752B61 /* CaptureViewController.swift in Sources */,
-				F40D46161F0E585200752B61 /* CameraFocusSquareView.swift in Sources */,
+				F43994AE1F160B4F00096217 /* ImageCollectionViewCell.swift in Sources */,
+				F43994AB1F160B2800096217 /* CaptureViewController.swift in Sources */,
+				F43994AC1F160B2800096217 /* GalleryImageViewController.swift in Sources */,
+				F43994AA1F160B2800096217 /* CameraFocusSquareView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,7 +226,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -202,7 +236,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -225,7 +263,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -244,7 +282,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -252,7 +292,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -269,7 +313,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

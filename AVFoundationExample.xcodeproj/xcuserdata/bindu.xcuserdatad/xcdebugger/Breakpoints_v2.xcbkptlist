@@ -9,14 +9,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "AVFoundationExample/CaptureViewController.swift"
-            timestampString = "521123321.397485"
+            filePath = "AVFoundationExample/HelperClasses/CameraFocusSquareView.swift"
+            timestampString = "522049391.890872"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "394"
-            endingLineNumber = "394"
-            landmarkName = "captureVideoOnTap(sender:)"
-            landmarkType = "7">
+            startingLineNumber = "11"
+            endingLineNumber = "11"
+            landmarkName = "CameraFocusSquareView"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "AVFoundationExample/CaptureViewController.swift"
-            timestampString = "521123327.10911"
+            filePath = "AVFoundationExample/ViewControllers/GalleryImageViewController.swift"
+            timestampString = "522051109.763429"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "360"
-            endingLineNumber = "360"
-            landmarkName = "capturePicOnTap(sender:)"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
+            landmarkName = "itemDidFinishPlaying(play:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

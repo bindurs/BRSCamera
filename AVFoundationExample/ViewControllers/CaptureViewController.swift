@@ -12,7 +12,10 @@ import Photos
 
 class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,AVCaptureFileOutputRecordingDelegate{
     
-    //    var keyFromMenu :String?
+    let Album_Title = "CamCam"
+    
+    @IBOutlet var photoLibraryImageView: UIImageView!
+    @IBOutlet var photoLibrarybutton: UIButton!
     var touchPoint : CGPoint?
     @IBOutlet var captureView: UIView!
     var image: UIImage!
@@ -41,74 +44,78 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
     // switching camera
     var camera : Bool = true
     var camFocus : CameraFocusSquareView?
-    
     var input : AVCaptureDeviceInput?
     var error: NSError?
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        
-        createAlbum()
-    }
+    var isCamera : Bool = true
     override func viewWillDisappear(_ animated: Bool) {
-        timer?.invalidate()
+        invalidateTimer()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
         
-        session = AVCaptureSession()
-
-        if (camera == false) {
-            let videoDevices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo)
-            
-            
-            for device in videoDevices!{
-                let device = device as! AVCaptureDevice
-                if device.position == AVCaptureDevicePosition.front {
-                    captureDevice = device
-                    break
-                }
-                
-            }
-        } else {
-            captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
-        }
+        
+        initialSetup()
+        photoLibrarybutton.layer.cornerRadius = photoLibrarybutton.frame.size.width/2
+        photoLibraryImageView.layer.cornerRadius = photoLibrarybutton.frame.size.width/2
+        captureButton.layer.cornerRadius = captureButton.frame.size.width/2
         
         let tap : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(tapOnView(sender:)))
         tap.delegate = self
         captureView.addGestureRecognizer(tap)
         
-        let capturePicOntap = UITapGestureRecognizer(target: self, action: #selector (capturePicOnTap(sender:)))
-        capturePicOntap.numberOfTapsRequired = 1
-        captureButton.addGestureRecognizer(capturePicOntap)
-        
-        let captureVideoOnTap = UILongPressGestureRecognizer(target: self, action: #selector (captureVideoOnTap(sender:)))
-        captureButton.addGestureRecognizer(captureVideoOnTap)
         self.recoderTimeLabel.isHidden = true
         
-        stillImageOutput = AVCapturePhotoOutput()
-        stillImageOutput?.isHighResolutionCaptureEnabled = true
-        stillImageOutput?.isLivePhotoCaptureEnabled = (stillImageOutput?.isLivePhotoCaptureSupported)!
-        videoOutput = AVCaptureMovieFileOutput()
-         setupPicCamera()
-        session?.startRunning()
-
+        
     }
     
     // MARK:- Methods
+    func initialSetup() {
+        
+        session = AVCaptureSession()
+        if (camera == false) {
+            
+            let captureDeviceDiscoverySession = AVCaptureDeviceDiscoverySession(deviceTypes: [AVCaptureDeviceType.builtInWideAngleCamera], mediaType: AVMediaTypeVideo, position: .front)
+            let videoDevices = captureDeviceDiscoverySession?.devices
+            
+            for device in videoDevices!{
+                let device = device
+                if device.position == AVCaptureDevicePosition.front {
+                    captureDevice = device
+                    break
+                }
+            }
+            
+            
+        } else {
+            captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+        }
+        
+        // image output
+        stillImageOutput = AVCapturePhotoOutput()
+        stillImageOutput?.isHighResolutionCaptureEnabled = true
+        stillImageOutput?.isLivePhotoCaptureEnabled = (stillImageOutput?.isLivePhotoCaptureSupported)!
+        
+        //video output
+        videoOutput = AVCaptureMovieFileOutput()
+        
+        setupPicCamera()
+        session?.startRunning()
+        createAlbum()
+        getLastImageFromAlbum()
+    }
     func setupVideoCamera() {
         
+        isCamera = false
         session!.sessionPreset = AVCaptureSessionPresetHigh
         
         do {
-            
             session?.beginConfiguration()
             session!.removeInput(input)
-
+            
             input = try AVCaptureDeviceInput(device: captureDevice)
-
+            
             if error == nil && session!.canAddInput(input) {
                 session!.addInput(input)
                 
@@ -116,16 +123,15 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
                     session!.addOutput(videoOutput)
                     
                     previewLayer = AVCaptureVideoPreviewLayer(session: session)
+                    previewLayer!.frame = captureView.frame
                     previewLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill
                     previewLayer!.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
-                    previewLayer!.frame = captureView.bounds
                     previewLayer?.connection.isEnabled = true
                     captureView.layer.addSublayer(previewLayer!)
                     
                     session!.commitConfiguration()
                 }
             }
-            
         }
         catch let err as NSError {
             error = err
@@ -136,6 +142,10 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
     }
     func setupPicCamera() {
         
+        invalidateTimer()
+        
+        self.captureButton.setTitle("Capture", for: UIControlState.normal)
+        isCamera = true
         session?.sessionPreset = AVCaptureSessionPresetPhoto
         do {
             
@@ -148,15 +158,13 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
                 
                 session?.addInput(input)
                 
-                
-                
                 if session!.canAddOutput(stillImageOutput) {
                     session?.addOutput(stillImageOutput)
                     
                     previewLayer = AVCaptureVideoPreviewLayer(session: session)
+                    previewLayer?.frame = captureView.frame
                     previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
                     previewLayer?.connection.videoOrientation = AVCaptureVideoOrientation.portrait
-                    previewLayer?.frame = captureView.bounds
                     previewLayer?.connection.isEnabled = true
                     captureView.layer.addSublayer(previewLayer!)
                     session?.commitConfiguration()
@@ -170,12 +178,13 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
     }
     
     
-    @IBAction func switchCameraBtnPressed(_ sender: UIBarButtonItem) {
+    
+    @IBAction func switchCameraBtnPressed(_ sender: UIButton) {
         
         self.camera = !camera
         session?.stopRunning()
         previewLayer?.removeFromSuperlayer()
-        setupPicCamera()
+        initialSetup()
     }
     
     func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
@@ -185,27 +194,26 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
         }
         
         if let sampleBuffer = photoSampleBuffer, let previewBuffer = previewPhotoSampleBuffer , let dataImage = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: sampleBuffer, previewPhotoSampleBuffer: previewBuffer) {
-            // print(image: UIImage(data: dataImage)?.size)
             
-            //            let imageData = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: sampleBuffer, previewPhotoSampleBuffer: sampleBuffer)
             let dataProvider = CGDataProvider(data: dataImage as CFData)
             let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
             image = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.right)
-             UIImageWriteToSavedPhotosAlbum(image, self,#selector(CaptureViewController.image(image:didFinishSavingWithError:contextInfo:)), nil)
-           // saveImage()
+            
+            saveImage()
         }
     }
     
-    func saveImage(){
-       
+    func saveImage() {
+        
         PHPhotoLibrary.shared().performChanges({
-            
-            let assetRequest  = PHAssetChangeRequest.creationRequestForAsset(from: self.image)
+            let assetRequest = PHAssetChangeRequest.creationRequestForAsset(from: self.image)
             let assetPlaceholder = assetRequest.placeholderForCreatedAsset
             let albumChangeRequest = PHAssetCollectionChangeRequest(for: self.assetCollection)
-            albumChangeRequest?.addAssets(assetPlaceholder as! NSFastEnumeration)
+            albumChangeRequest?.addAssets([assetPlaceholder!] as NSArray)
             
-        }) {  success, error in
+        }) { (success, error) in
+            
+            self.getLastImageFromAlbum()
             print("added image to album")
             print(error ?? "error")
         }
@@ -244,7 +252,7 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
     func createAlbum() {
         //Get PHFetch Options
         let fetchOptions = PHFetchOptions()
-        fetchOptions.predicate = NSPredicate(format: "title = %@", "camcam")
+        fetchOptions.predicate = NSPredicate(format: "title = %@", Album_Title)
         let collection : PHFetchResult = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
         //Check return value - If found, then get the first album out
         if let _: AnyObject = collection.firstObject {
@@ -253,7 +261,7 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
         } else {
             //If not found - Then create a new album
             PHPhotoLibrary.shared().performChanges({
-                let createAlbumRequest : PHAssetCollectionChangeRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: "camcam")
+                let createAlbumRequest : PHAssetCollectionChangeRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: self.Album_Title)
                 self.assetCollectionPlaceholder = createAlbumRequest.placeholderForCreatedAssetCollection
             }, completionHandler: { success, error in
                 self.albumFound = success
@@ -266,6 +274,138 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
             })
         }
     }
+    
+    func getLastImageFromAlbum() {
+        
+        var albumFound = false
+        
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.predicate = NSPredicate(format: "title = %@", Album_Title)
+        let collection:PHFetchResult = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
+        
+        if let first_obj:Any = collection.firstObject {
+            albumFound = true
+            print(first_obj)
+        }
+        
+        if albumFound {
+            let imageManager = PHCachingImageManager()
+            photosAsset = PHAsset.fetchAssets(in: assetCollection, options: nil) as! PHFetchResult<AnyObject>
+            
+            print(photosAsset.count)
+            photosAsset.enumerateObjects({ (object, count, stop) in
+                
+                let asset = self.photosAsset.lastObject as! PHAsset
+               
+                let imageSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
+                let options = PHImageRequestOptions()
+                options.deliveryMode = .fastFormat
+                options.isSynchronous = true
+                
+                imageManager.requestImage(for: asset , targetSize: imageSize, contentMode: .aspectFill, options: options, resultHandler: { (result, info) in
+                    DispatchQueue.main.async {
+                        self.photoLibraryImageView.image = result
+                    }
+                })
+            })
+            
+            if photosAsset.count == 0 {
+                photoLibrarybutton.isHidden = true
+                photoLibraryImageView.isHidden = true
+            } else {
+                photoLibrarybutton.isHidden = false
+                photoLibraryImageView.isHidden = false
+            }
+        }
+        
+    }
+    
+    func invalidateTimer() {
+        
+        if timer != nil {
+            timer!.invalidate()
+            timer = nil
+        }
+        
+        recoderTimeLabel.isHidden = true
+        
+        timeInHour = 0
+        timeInMinute = 0
+        timeInSec = 0
+        
+    }
+    
+    
+    //MARK: - Button Actions
+    
+    
+    @IBAction func captureBtnClicked(_ sender: UIButton) {
+        
+        if isCamera {
+            
+            previewLayer?.connection.isEnabled = false
+            
+            let popTime =  DispatchTime.now() + 2.0
+            
+            
+            if (stillImageOutput!.connection(withMediaType: AVMediaTypeVideo)) != nil {
+                
+                // settings
+                let settings = AVCapturePhotoSettings()
+                let previewPixelType = settings.availablePreviewPhotoPixelFormatTypes.first!
+                let previewFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType,kCVPixelBufferWidthKey as String: 160,kCVPixelBufferHeightKey as String: 160,
+                                     ]
+                settings.previewPhotoFormat = previewFormat
+                self.stillImageOutput?.capturePhoto(with: settings, delegate: self)
+                
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: popTime) {
+                self.previewLayer?.connection.isEnabled = true
+            }
+        } else {
+            
+            sender.isEnabled = false
+            let popTime =  DispatchTime.now() + 2.0
+            
+            if (self.videoOutput?.isRecording)!{
+                //Change camera button for video recording
+                DispatchQueue.main.asyncAfter(deadline: popTime) {
+                    self.previewLayer?.connection.isEnabled = true
+                    
+                }
+                
+                invalidateTimer()
+                self.videoOutput?.stopRecording()
+                self.recoderTimeLabel.isHidden = true
+                
+                
+                
+                print("stopped")
+                self.captureButton.setTitle("Capture", for: UIControlState.normal)
+                
+            } else {
+                
+                let fileName = "video.mp4";
+                let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                
+                let filePath = documentsURL.appendingPathComponent(fileName)
+                
+                self.recoderTimeLabel.isHidden = false
+                self.recoderTimeLabel.text = String(format :"%2d : %2d : %2d",timeInHour,timeInMinute,timeInSec)
+                
+                self.captureButton.setTitle("Stop", for: UIControlState.normal)
+                self.videoOutput!.startRecording(toOutputFileURL: filePath, recordingDelegate: self as AVCaptureFileOutputRecordingDelegate)
+                
+                //                timer = Timer(timeInterval: 0.1, target: self, selector: #selector(timerOnVideoCapture(timer:)), userInfo: nil, repeats: true)
+                //                timer?.fire()
+                timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerOnVideoCapture(timer:)), userInfo: nil, repeats: true)
+                timer?.fire()
+            }
+            
+        }
+    }
+    
     //MARK: - Shows alert when image is saved
     func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafeRawPointer) {
         guard error == nil else {
@@ -279,12 +419,6 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
         print("saved")
         
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    //MARK: - Shows alert when image is saved
     //MARK: - Get completed video path
     
     func capture(_ captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAt outputFileURL: URL!, fromConnections connections: [Any]!, error: Error!) {
@@ -296,30 +430,15 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
     func doVideoProcessing(outputPath:NSURL){
         
         PHPhotoLibrary.shared().performChanges({
-            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputPath as URL)
             
-            
-            
+            let assetRequest = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputPath as URL)
+            let assetPlaceholder = assetRequest?.placeholderForCreatedAsset
+            let albumChangeRequest = PHAssetCollectionChangeRequest(for: self.assetCollection)
+            albumChangeRequest?.addAssets([assetPlaceholder!] as NSArray)
+            self.getLastImageFromAlbum()
         }) { (success, error) in
-            
-            if error == nil{
-                
-                print("Success:\(success)")
-                DispatchQueue.main.async(execute: {
-                    //                    self.activityIndicator!.stopAnimating()
-                    //                    self.showAlert("Saved", message: "Video saved to Photos")
-                })
-                
-            }
-            else{
-                
-                DispatchQueue.main.async(execute: {
-                    //                    self.activityIndicator!.stopAnimating()
-                    //
-                    //                    self.showAlert("Error", message: error!.localizedDescription)
-                    
-                })
-            }
+            print("added video to album")
+            print(error ?? "error")
         }
     }
     
@@ -346,77 +465,24 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
         UIView.commitAnimations()
     }
     
-    func capturePicOnTap(sender: UITapGestureRecognizer) {
+    //MARK: - UIButton Actions
+    
+    @IBAction func shoImageBtnPressed(_ sender: UIButton) {
         
         
-        if (self.videoOutput?.isRecording)! {
-            //Change camera button for video recording
-            self.videoOutput?.stopRecording()
-            self.captureButton.setTitle("Capture", for: UIControlState.normal)
-            timer?.invalidate()
-        } else {
-            
-            setupPicCamera()
-            previewLayer?.connection.isEnabled = false
-            
-            let popTime =  DispatchTime.now() + 2.0
-            
-            
-            if (stillImageOutput!.connection(withMediaType: AVMediaTypeVideo)) != nil {
-                
-                // settings
-                let settings = AVCapturePhotoSettings()
-                let previewPixelType = settings.availablePreviewPhotoPixelFormatTypes.first!
-                let previewFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType,
-                                     kCVPixelBufferWidthKey as String: 160,
-                                     kCVPixelBufferHeightKey as String: 160,
-                                     ]
-                settings.previewPhotoFormat = previewFormat
-                self.stillImageOutput?.capturePhoto(with: settings, delegate: self)
-                
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: popTime) {
-                self.previewLayer?.connection.isEnabled = true
-            }
-        }
+        
     }
-    func captureVideoOnTap(sender: UILongPressGestureRecognizer) {
+    
+    @IBAction func swapBtnPressed(_ sender: UIButton) {
         
-        sender.isEnabled = false
-        let popTime =  DispatchTime.now() + 2.0
-        
-        DispatchQueue.main.asyncAfter(deadline: popTime) {
-            sender.isEnabled = true
-        }
-        if (self.videoOutput?.isRecording)! {
-            //Change camera button for video recording
-            self.videoOutput?.stopRecording()
-            self.recoderTimeLabel.isHidden = true
-            timer?.invalidate()
-            print("stopped")
-            self.captureButton.setTitle("Capture", for: UIControlState.normal)
-            
-        } else {
-           
+        if isCamera {
+            sender.setTitle("Photo", for: UIControlState.normal)
             setupVideoCamera()
             
-            let fileName = "video.mp4";
-            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            
-            let filePath = documentsURL.appendingPathComponent(fileName)
-            
-            self.recoderTimeLabel.isHidden = false
-            self.recoderTimeLabel.text = String(format :"%2d : %2d : %2d",timeInHour,timeInMinute,timeInSec)
-            
-            self.captureButton.setTitle("Stop", for: UIControlState.normal)
-            self.videoOutput!.startRecording(toOutputFileURL: filePath, recordingDelegate: self as AVCaptureFileOutputRecordingDelegate)
-            
-            timer = Timer(timeInterval: 1.0, target: self, selector: #selector(timerOnVideoCapture(timer:)), userInfo: nil, repeats: true)
-            RunLoop.current.add(timer!, forMode: RunLoopMode.defaultRunLoopMode)
-            
+        } else {
+            sender.setTitle("Video", for: UIControlState.normal)
+            setupPicCamera()
         }
-        
     }
     
     //MARK: - NSTimer
@@ -435,14 +501,23 @@ class CaptureViewController: UIViewController ,AVCapturePhotoCaptureDelegate,UII
         }
         self.recoderTimeLabel.text = String(format :"%2d : %2d : %2d",timeInHour,timeInMinute,timeInSec)
     }
-    /*
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
      // Get the new view controller using segue.destinationViewController.
      // Pass the selected object to the new view controller.
+        
+        let vc :GalleryImageViewController = segue.destination as! GalleryImageViewController
+        vc.assetCollection = assetCollection
      }
-     */
+ 
     
 }
