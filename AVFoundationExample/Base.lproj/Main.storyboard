@@ -109,27 +109,20 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="Tim-X0-gxb" firstAttribute="top" secondItem="i4f-VF-mFq" secondAttribute="bottom" constant="10" id="1YJ-5s-Kjg"/>
                             <constraint firstAttribute="trailing" secondItem="MeY-6k-9kM" secondAttribute="trailing" id="3XY-Wh-bPX"/>
                             <constraint firstItem="Xvz-lj-hTx" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" constant="20" id="JXw-AR-mfL"/>
-                            <constraint firstItem="Xvz-lj-hTx" firstAttribute="top" secondItem="i4f-VF-mFq" secondAttribute="bottom" constant="10" id="Qa7-5s-gRp"/>
-                            <constraint firstItem="H8D-gK-X1k" firstAttribute="top" secondItem="B1o-lf-L4Z" secondAttribute="bottom" id="X4d-LL-BNr"/>
                             <constraint firstAttribute="trailing" secondItem="Tim-X0-gxb" secondAttribute="trailing" constant="10" id="b9h-af-GZC"/>
+                            <constraint firstItem="Xvz-lj-hTx" firstAttribute="top" secondItem="i4f-VF-mFq" secondAttribute="bottom" constant="10" id="cxm-Op-1FT"/>
+                            <constraint firstItem="H8D-gK-X1k" firstAttribute="top" secondItem="B1o-lf-L4Z" secondAttribute="bottom" id="fT1-b8-k3Y"/>
+                            <constraint firstItem="H8D-gK-X1k" firstAttribute="top" secondItem="MeY-6k-9kM" secondAttribute="bottom" id="gYu-s2-sUn"/>
                             <constraint firstAttribute="trailing" secondItem="B1o-lf-L4Z" secondAttribute="trailing" id="iTa-1d-ToJ"/>
                             <constraint firstItem="B1o-lf-L4Z" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" id="mRe-M4-iHw"/>
                             <constraint firstItem="B1o-lf-L4Z" firstAttribute="top" secondItem="6So-hb-vAN" secondAttribute="top" id="nf1-R5-T5c"/>
                             <constraint firstItem="MeY-6k-9kM" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" id="oIK-AB-Vix"/>
-                            <constraint firstItem="H8D-gK-X1k" firstAttribute="top" secondItem="MeY-6k-9kM" secondAttribute="bottom" id="qPV-32-1FW"/>
-                            <constraint firstItem="Tim-X0-gxb" firstAttribute="top" secondItem="i4f-VF-mFq" secondAttribute="bottom" constant="10" id="yjk-u4-JCy"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="Fch-YW-RW5">
-                        <barButtonItem key="rightBarButtonItem" title="button" id="cJC-YF-Wo3">
-                            <connections>
-                                <action selector="switchCameraBtnPressed:" destination="2gv-lR-3lY" id="Zuo-DM-8jV"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
                     <connections>
                         <outlet property="captureButton" destination="er7-Pf-Bcu" id="g6I-kx-Pcg"/>
                         <outlet property="captureView" destination="B1o-lf-L4Z" id="sRz-Uh-KZC"/>
@@ -187,6 +180,7 @@
                                                 </button>
                                             </subviews>
                                         </view>
+                                        <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstItem="Nli-4w-9O4" firstAttribute="leading" secondItem="td3-DM-i3L" secondAttribute="leading" id="Cpw-O7-DoJ"/>
                                             <constraint firstItem="eXd-4Q-d4T" firstAttribute="leading" secondItem="td3-DM-i3L" secondAttribute="leading" constant="80" id="CvY-dU-ycF"/>
@@ -200,6 +194,7 @@
                                         <connections>
                                             <outlet property="gallerImageView" destination="Nli-4w-9O4" id="bAH-YK-vWU"/>
                                             <outlet property="playButton" destination="eXd-4Q-d4T" id="eYs-LK-371"/>
+                                            <outletCollection property="gestureRecognizers" destination="NiA-CA-E90" appends="YES" id="pQu-3u-gjV"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -222,6 +217,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MEq-1b-WBP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pinchGestureRecognizer id="NiA-CA-E90">
+                    <connections>
+                        <action selector="dismiss:" destination="IDp-Hv-Cs5" id="Hk9-uu-yDM"/>
+                    </connections>
+                </pinchGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1213.125" y="79.225352112676063"/>
         </scene>

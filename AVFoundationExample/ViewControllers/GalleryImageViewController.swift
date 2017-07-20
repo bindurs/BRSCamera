@@ -74,8 +74,10 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
         let cell : ImageCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImageCollectionViewCell
         
         asset = photosAsset.object(at: indexPath.row) as! PHAsset
+    
         let videoOptions: PHVideoRequestOptions = PHVideoRequestOptions()
         videoOptions.version = .original
+    
         if (asset.mediaType == PHAssetMediaType.video) {
             
             cell.playButton.isHidden = false;
@@ -100,7 +102,6 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
                 cell.gallerImageView.image = result
             }
         })
-        
         
         return cell
     }
@@ -131,7 +132,7 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
             player.pause()
             pauseTime = player.currentTime()
             cell.bringSubview(toFront: cell.playButton)
-
+            
         } else {
             
             if (CMTimeGetSeconds(pauseTime!) != 0) {
@@ -212,6 +213,13 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
         }
         
     }
+    //MARK: - Pinch Gesture
+    
+    
+    @IBAction func dismiss(_ sender: UIPinchGestureRecognizer) {
+        
+        self.dismiss(animated: false, completion: nil)
+    }
     
     //MARK: - Scrollview Delegate
     
@@ -239,6 +247,7 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
             }
         }
     }
+    
     /*
      // MARK: - Navigation
      
