@@ -16,7 +16,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     
     @IBOutlet var photoLibraryImageView: UIImageView!
     @IBOutlet var photoLibrarybutton: UIButton!
-    @IBOutlet var captureView: UIView!
+    @IBOutlet var captureView: PreviewView!
     @IBOutlet var recoderTimeLabel: UILabel!
     @IBOutlet var captureButton: UIButton!
     
@@ -68,35 +68,9 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         captureView.addGestureRecognizer(tap)
         
         self.recoderTimeLabel.isHidden = true
-        setupPreview()
+         captureView.session = session
     }
     
-    
-    func setupPreview() {
-        
-        if isCamera {
-            previewLayer = AVCaptureVideoPreviewLayer(session: session)
-            previewLayer?.frame = captureView.frame
-            previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
-            previewLayer?.connection.videoOrientation = AVCaptureVideoOrientation.portrait
-            previewLayer?.connection.isEnabled = true
-            captureView.layer.addSublayer(previewLayer!)
-        } else {
-            
-            previewLayer = AVCaptureVideoPreviewLayer(session: session)
-            previewLayer!.frame = captureView.frame
-            previewLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill
-            previewLayer!.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
-            previewLayer?.connection.isEnabled = true
-            captureView.layer.addSublayer(previewLayer!)
-            previewLayer = AVCaptureVideoPreviewLayer(session: session)
-            previewLayer?.frame = captureView.frame
-            previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
-            previewLayer?.connection.videoOrientation = AVCaptureVideoOrientation.portrait
-            previewLayer?.connection.isEnabled = true
-            captureView.layer.addSublayer(previewLayer!)
-        }
-    }
     // MARK:- Methods
     
     @IBAction func switchCameraBtnPressed(_ sender: UIButton) {

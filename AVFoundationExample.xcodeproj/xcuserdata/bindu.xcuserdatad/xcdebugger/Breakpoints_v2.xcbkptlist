@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AVFoundationExample/ViewControllers/CaptureViewController.swift"
-            timestampString = "522234105.856056"
+            timestampString = "522569217.963343"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
             landmarkName = "getImageAfterImageSave()"
             landmarkType = "7">
             <Locations>
@@ -26,11 +26,11 @@
                   moduleName = "AVFoundationExample"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/bindu/Documents/test/AVFoundationExample/AVFoundationExample/ViewControllers/CaptureViewController.swift"
-                  timestampString = "522235630.580996"
+                  timestampString = "522568731.732235"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "159"
-                  endingLineNumber = "159"
+                  startingLineNumber = "160"
+                  endingLineNumber = "160"
                   offsetFromSymbolStart = "16">
                </Location>
                <Location
@@ -41,11 +41,11 @@
                   moduleName = "AVFoundationExample"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/bindu/Documents/test/AVFoundationExample/AVFoundationExample/ViewControllers/CaptureViewController.swift"
-                  timestampString = "522235630.583603"
+                  timestampString = "522568731.734777"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "161"
-                  endingLineNumber = "161"
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
                   offsetFromSymbolStart = "20">
                </Location>
             </Locations>

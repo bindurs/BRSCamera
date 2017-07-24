@@ -17,6 +17,7 @@
 		F43994AB1F160B2800096217 /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994A81F160B2800096217 /* CaptureViewController.swift */; };
 		F43994AC1F160B2800096217 /* GalleryImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994A91F160B2800096217 /* GalleryImageViewController.swift */; };
 		F43994AE1F160B4F00096217 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994AD1F160B4F00096217 /* ImageCollectionViewCell.swift */; };
+		F44A93D21F25C3B90007805A /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44A93D11F25C3B90007805A /* PreviewView.swift */; };
 		F459DC051F2077CE00EFBAAE /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F459DC041F2077CE00EFBAAE /* CameraController.swift */; };
 		F45F40CE1F1F146100A77719 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45F40CD1F1F146100A77719 /* OpenGLES.framework */; };
 		F45F40D01F1F146900A77719 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45F40CF1F1F146900A77719 /* CoreImage.framework */; };
@@ -35,6 +36,7 @@
 		F43994A81F160B2800096217 /* CaptureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureViewController.swift; sourceTree = "<group>"; };
 		F43994A91F160B2800096217 /* GalleryImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryImageViewController.swift; sourceTree = "<group>"; };
 		F43994AD1F160B4F00096217 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		F44A93D11F25C3B90007805A /* PreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		F459DC041F2077CE00EFBAAE /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		F45F40CD1F1F146100A77719 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		F45F40CF1F1F146900A77719 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
@@ -111,6 +113,7 @@
 			children = (
 				F43994A61F160B2800096217 /* CameraFocusSquareView.swift */,
 				F459DC041F2077CE00EFBAAE /* CameraController.swift */,
+				F44A93D11F25C3B90007805A /* PreviewView.swift */,
 			);
 			path = HelperClasses;
 			sourceTree = "<group>";
@@ -199,6 +202,7 @@
 			files = (
 				F459DC051F2077CE00EFBAAE /* CameraController.swift in Sources */,
 				F40D45FB1F0E0A0C00752B61 /* AppDelegate.swift in Sources */,
+				F44A93D21F25C3B90007805A /* PreviewView.swift in Sources */,
 				F43994AE1F160B4F00096217 /* ImageCollectionViewCell.swift in Sources */,
 				F43994AB1F160B2800096217 /* CaptureViewController.swift in Sources */,
 				F43994AC1F160B2800096217 /* GalleryImageViewController.swift in Sources */,
