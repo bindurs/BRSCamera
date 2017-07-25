@@ -49,5 +49,53 @@
             landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AVFoundationExample/ViewControllers/GalleryImageViewController.swift"
+            timestampString = "522657327.811696"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AVFoundationExample.GalleryImageViewController.viewDidLoad () -&gt; ()"
+                  moduleName = "AVFoundationExample"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bindu/Documents/test/AVFoundationExample/AVFoundationExample/ViewControllers/GalleryImageViewController.swift"
+                  timestampString = "522656412.59001"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "50"
+                  endingLineNumber = "50"
+                  offsetFromSymbolStart = "1312">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AVFoundationExample.GalleryImageViewController.(viewDidLoad () -&gt; ()).(closure #1)"
+                  moduleName = "AVFoundationExample"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/bindu/Documents/test/AVFoundationExample/AVFoundationExample/ViewControllers/GalleryImageViewController.swift"
+                  timestampString = "522656412.592107"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

@@ -225,7 +225,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         camFocus?.alpha  = 0
         UIView.commitAnimations()
     }
-    
+       
     //MARK: - UIButton Actions
     
     @IBAction func shoImageBtnPressed(_ sender: UIButton) {

@@ -73,35 +73,45 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
         
         let cell : ImageCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImageCollectionViewCell
         
-        asset = photosAsset.object(at: indexPath.row) as! PHAsset
-    
-        let videoOptions: PHVideoRequestOptions = PHVideoRequestOptions()
-        videoOptions.version = .original
-    
-        if (asset.mediaType == PHAssetMediaType.video) {
+//        cell.gallerImageView.image = #imageLiteral(resourceName: "pause")
+
+        DispatchQueue.global(qos: .background).async {
             
-            cell.playButton.isHidden = false;
-            cell.playButton.tag = indexPath.row
-            PHImageManager.default().requestAVAsset(forVideo: asset, options: videoOptions) { (asset, audioMix, info) in
+            self.asset = self.photosAsset.object(at: indexPath.row) as! PHAsset
+            
+            let videoOptions: PHVideoRequestOptions = PHVideoRequestOptions()
+            videoOptions.version = .original
+            
+            if (self.asset.mediaType == PHAssetMediaType.video) {
                 
-                if let urlAsset = asset as? AVURLAsset {
-                    self.localVideoUrl = urlAsset.url as NSURL
+                cell.playButton.isHidden = false;
+                cell.playButton.tag = indexPath.row
+                PHImageManager.default().requestAVAsset(forVideo: self.asset, options: videoOptions) { (asset, audioMix, info) in
+                    
+                    if let urlAsset = asset as? AVURLAsset {
+                        self.localVideoUrl = urlAsset.url as NSURL
+                    }
                 }
+            } else {
+                cell.playButton.isHidden = true;
             }
-        } else {
-            cell.playButton.isHidden = true;
+            
+            let imageSize = CGSize(width: self.asset.pixelWidth, height: self.asset.pixelHeight)
+            let options = PHImageRequestOptions()
+            options.deliveryMode = .fastFormat
+            options.isSynchronous = true
+            
+            self.imageManager.requestImage(for: self.asset , targetSize: imageSize, contentMode: .aspectFill, options: options, resultHandler: { (result, info) in
+                DispatchQueue.main.async {
+                    cell.gallerImageView.image = result
+                }
+            })
+//            DispatchQueue.main.async {
+//                
+//                cell.gallerImageView.image = #imageLiteral(resourceName: "pause")
+//            }
         }
         
-        let imageSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
-        let options = PHImageRequestOptions()
-        options.deliveryMode = .fastFormat
-        options.isSynchronous = true
-        
-        imageManager.requestImage(for: asset , targetSize: imageSize, contentMode: .aspectFill, options: options, resultHandler: { (result, info) in
-            DispatchQueue.main.async {
-                cell.gallerImageView.image = result
-            }
-        })
         
         return cell
     }
@@ -213,7 +223,12 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
         }
         
     }
+         //MARK: - pinch gesture
     
+    @IBAction func dismiss(_ sender: UIPinchGestureRecognizer) {
+        
+    dismiss(animated: true, completion: nil)
+    }
     //MARK: - Scrollview Delegate
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
        
