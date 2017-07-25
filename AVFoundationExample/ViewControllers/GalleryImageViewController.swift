@@ -213,19 +213,23 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
         }
         
     }
-    //MARK: - Pinch Gesture
-    
-    
-    @IBAction func dismiss(_ sender: UIPinchGestureRecognizer) {
-        
-        self.dismiss(animated: false, completion: nil)
-    }
     
     //MARK: - Scrollview Delegate
-    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+       
+        let scrollViewWidth = scrollView.frame.size.width
+        let scrollContentSizeWidth = scrollView.contentSize.width
+        let scrollOffset = scrollView.contentOffset.x
+        
+        if (scrollOffset + scrollViewWidth > scrollContentSizeWidth+50) {
+            // then we are at the end
+            self.dismiss(animated: true, completion: nil)
+        }
+
+    }
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-        itemDidFinishPlaying(play: player)
+            itemDidFinishPlaying(play: player)
         
         let pageWidth : CGFloat = imageCollectionView.frame.size.width
         let currentPage:Int = Int(imageCollectionView.contentOffset.x/pageWidth)

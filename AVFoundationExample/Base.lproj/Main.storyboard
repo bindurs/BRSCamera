@@ -194,7 +194,6 @@
                                         <connections>
                                             <outlet property="gallerImageView" destination="Nli-4w-9O4" id="bAH-YK-vWU"/>
                                             <outlet property="playButton" destination="eXd-4Q-d4T" id="eYs-LK-371"/>
-                                            <outletCollection property="gestureRecognizers" destination="NiA-CA-E90" appends="YES" id="pQu-3u-gjV"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -217,11 +216,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MEq-1b-WBP" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <pinchGestureRecognizer id="NiA-CA-E90">
-                    <connections>
-                        <action selector="dismiss:" destination="IDp-Hv-Cs5" id="Hk9-uu-yDM"/>
-                    </connections>
-                </pinchGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1213.125" y="79.225352112676063"/>
         </scene>
