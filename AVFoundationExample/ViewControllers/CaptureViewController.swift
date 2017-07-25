@@ -51,7 +51,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         cameraController = CameraController()
         // Do any additional setup after loading the view.
         cameraController?.delegate = self
@@ -68,7 +68,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         captureView.addGestureRecognizer(tap)
         
         self.recoderTimeLabel.isHidden = true
-         captureView.session = session
+        captureView.session = session
     }
     
     // MARK:- Methods
@@ -225,7 +225,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         camFocus?.alpha  = 0
         UIView.commitAnimations()
     }
-       
+    
     //MARK: - UIButton Actions
     
     @IBAction func shoImageBtnPressed(_ sender: UIButton) {
@@ -238,12 +238,12 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         
         cameraController?.delegate = self
         if isCamera {
-            sender.setTitle("Photo", for: UIControlState.normal)
+            sender.setImage(#imageLiteral(resourceName: "camera"), for: UIControlState.normal)
             cameraController?.setupVideoCamera()
             isCamera =  false
             
         } else {
-            sender.setTitle("Video", for: UIControlState.normal)
+            sender.setImage(#imageLiteral(resourceName: "videocam"), for: UIControlState.normal)
             invalidateTimer()
             cameraController?.setupPicCamera()
             isCamera =  true

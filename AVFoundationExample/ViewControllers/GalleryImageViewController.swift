@@ -73,8 +73,6 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
         
         let cell : ImageCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImageCollectionViewCell
         
-//        cell.gallerImageView.image = #imageLiteral(resourceName: "pause")
-
         DispatchQueue.global(qos: .background).async {
             
             self.asset = self.photosAsset.object(at: indexPath.row) as! PHAsset
