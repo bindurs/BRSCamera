@@ -34,13 +34,13 @@ class PreviewView: UIView {
         ]
     func updateVideoOrientationForDeviceOrientation() {
         if let videoPreviewLayerConnection = videoPreviewLayer.connection {
-            let deviceOrientation = UIDevice.current.orientation
-            guard let newVideoOrientation = orientationMap[deviceOrientation],
-                deviceOrientation.isPortrait || deviceOrientation.isLandscape
-                else {
-                    return
-            }
-            videoPreviewLayerConnection.videoOrientation = newVideoOrientation
+           // let deviceOrientation = UIDevice.current.orientation
+//            guard let newVideoOrientation = .p /*orientationMap[deviceOrientation],
+//                deviceOrientation.isPortrait || deviceOrientation.isLandscape*/
+//                else {
+//                    return
+//            }
+            videoPreviewLayerConnection.videoOrientation = .portrait
         }
     }
 }

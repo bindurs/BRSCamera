@@ -9,6 +9,8 @@
 import UIKit
 import AVFoundation
 import Photos
+import GLKit
+import QuartzCore
 
 class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,CameraControllerDelegate{
     
@@ -36,13 +38,11 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     // session
     var session : AVCaptureSession?
     
-    var previewLayer :AVCaptureVideoPreviewLayer?
+    //    var previewLayer :AVCaptureVideoPreviewLayer?
     var camFocus : CameraFocusSquareView?
-    var camera : Bool = true
-    var isCamera : Bool = true
+    var isPhoto : Bool = true
+    var isFrontCamera : Bool = false
     var albumFound : Bool = false
-    
-    
     
     var cameraController: CameraController?
     
@@ -51,12 +51,12 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         cameraController = CameraController()
         // Do any additional setup after loading the view.
         cameraController?.delegate = self
         
-        session = cameraController?.initialSetup(isCamera: isCamera)
+        session = cameraController?.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
         getImageAfterImageSave()
         photoLibrarybutton.layer.cornerRadius = photoLibrarybutton.frame.size.width/2
         photoLibraryImageView.layer.cornerRadius = photoLibrarybutton.frame.size.width/2
@@ -68,18 +68,18 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         captureView.addGestureRecognizer(tap)
         
         self.recoderTimeLabel.isHidden = true
-         captureView.session = session
+        
+        captureView.session = session
     }
     
     // MARK:- Methods
     
     @IBAction func switchCameraBtnPressed(_ sender: UIButton) {
         
-        self.camera = !camera
+        isFrontCamera = !isFrontCamera
         session?.stopRunning()
-        previewLayer?.removeFromSuperlayer()
-        session = cameraController?.initialSetup(isCamera:self.camera)
-        isCamera =  self.camera
+        session = cameraController?.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
+        captureView.session = session
     }
     
     
@@ -144,18 +144,25 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         
     }
     
+    func capturedImage(image:CIImage) {
+        
+        DispatchQueue.main.sync(execute: {
+            captureView.videoPreviewLayer.contents = image
+        })
+        
+    }
     //MARK: - Button Actions
     
     @IBAction func captureBtnClicked(_ sender: UIButton) {
         
-        if isCamera {
+        if isPhoto {
             
-            previewLayer?.connection.isEnabled = false
+            captureView.videoPreviewLayer.connection.isEnabled = false
             
             let popTime =  DispatchTime.now() + 2.0
             cameraController?.capture()
             DispatchQueue.main.asyncAfter(deadline: popTime) {
-                self.previewLayer?.connection.isEnabled = true
+                self.captureView.videoPreviewLayer.connection.isEnabled = true
             }
         } else {
             
@@ -164,7 +171,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
             if (cameraController?.videoOutput?.isRecording)!{
                 //Change camera button for video recording
                 DispatchQueue.main.asyncAfter(deadline: popTime) {
-                    self.previewLayer?.connection.isEnabled = true
+                    self.captureView.videoPreviewLayer.connection.isEnabled = true
                     
                 }
                 cameraController?.videoOutput?.stopRecording()
@@ -215,7 +222,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
             camFocus?.removeFromSuperview()
         }
         
-        camFocus = CameraFocusSquareView(frame: CGRect(x: (touchPoint?.x)!-40, y: (touchPoint?.y)!-40, width:80, height: 80))
+        camFocus = CameraFocusSquareView(frame: CGRect(x: (touchPoint?.x)!-45, y: (touchPoint?.y)!-45, width:90, height: 90))
         camFocus?.backgroundColor = UIColor.clear
         captureView.addSubview(camFocus!)
         camFocus?.setNeedsDisplay()
@@ -237,17 +244,15 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     @IBAction func swapBtnPressed(_ sender: UIButton) {
         
         cameraController?.delegate = self
-        if isCamera {
-            sender.setTitle("Photo", for: UIControlState.normal)
-            cameraController?.setupVideoCamera()
-            isCamera =  false
-            
-        } else {
+        if isPhoto {
             sender.setTitle("Video", for: UIControlState.normal)
             invalidateTimer()
             cameraController?.setupPicCamera()
-            isCamera =  true
+        } else {
+            sender.setTitle("Photo", for: UIControlState.normal)
+            cameraController?.setupVideoCamera()
         }
+        isPhoto = !isPhoto
     }
     
     //MARK: - NSTimer
