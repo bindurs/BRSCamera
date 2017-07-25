@@ -328,6 +328,8 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             print("added image to album")
             print(error ?? "error")
         }
+        
+    
     }
     
 }

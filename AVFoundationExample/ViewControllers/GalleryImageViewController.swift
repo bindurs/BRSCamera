@@ -72,6 +72,7 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell : ImageCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImageCollectionViewCell
+        cell.playButton.isHidden = true
         
         DispatchQueue.global(qos: .background).async {
             
@@ -80,34 +81,33 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
             let videoOptions: PHVideoRequestOptions = PHVideoRequestOptions()
             videoOptions.version = .original
             
-            if (self.asset.mediaType == PHAssetMediaType.video) {
+            DispatchQueue.main.async {
                 
-                cell.playButton.isHidden = false;
-                cell.playButton.tag = indexPath.row
-                PHImageManager.default().requestAVAsset(forVideo: self.asset, options: videoOptions) { (asset, audioMix, info) in
+                if (self.asset.mediaType == PHAssetMediaType.video) {
                     
-                    if let urlAsset = asset as? AVURLAsset {
-                        self.localVideoUrl = urlAsset.url as NSURL
+                    cell.playButton.isHidden = false;
+                    cell.playButton.tag = indexPath.row
+                    PHImageManager.default().requestAVAsset(forVideo: self.asset, options: videoOptions) { (asset, audioMix, info) in
+                        
+                        if let urlAsset = asset as? AVURLAsset {
+                            self.localVideoUrl = urlAsset.url as NSURL
+                        }
                     }
+                } else {
+                    cell.playButton.isHidden = true
                 }
-            } else {
-                cell.playButton.isHidden = true;
+                
+                let imageSize = CGSize(width: self.asset.pixelWidth, height: self.asset.pixelHeight)
+                let options = PHImageRequestOptions()
+                options.deliveryMode = .fastFormat
+                options.isSynchronous = true
+                
+                self.imageManager.requestImage(for: self.asset , targetSize: imageSize, contentMode: .aspectFill, options: options, resultHandler: { (result, info) in
+                    DispatchQueue.main.async {
+                        cell.gallerImageView.image = result
+                    }
+                })
             }
-            
-            let imageSize = CGSize(width: self.asset.pixelWidth, height: self.asset.pixelHeight)
-            let options = PHImageRequestOptions()
-            options.deliveryMode = .fastFormat
-            options.isSynchronous = true
-            
-            self.imageManager.requestImage(for: self.asset , targetSize: imageSize, contentMode: .aspectFill, options: options, resultHandler: { (result, info) in
-                DispatchQueue.main.async {
-                    cell.gallerImageView.image = result
-                }
-            })
-//            DispatchQueue.main.async {
-//                
-//                cell.gallerImageView.image = #imageLiteral(resourceName: "pause")
-//            }
         }
         
         
@@ -221,15 +221,15 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
         }
         
     }
-         //MARK: - pinch gesture
+    //MARK: - pinch gesture
     
     @IBAction func dismiss(_ sender: UIPinchGestureRecognizer) {
         
-    dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     //MARK: - Scrollview Delegate
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-       
+        
         let scrollViewWidth = scrollView.frame.size.width
         let scrollContentSizeWidth = scrollView.contentSize.width
         let scrollOffset = scrollView.contentOffset.x
@@ -238,11 +238,11 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
             // then we are at the end
             self.dismiss(animated: true, completion: nil)
         }
-
+        
     }
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-            itemDidFinishPlaying(play: player)
+        itemDidFinishPlaying(play: player)
         
         let pageWidth : CGFloat = imageCollectionView.frame.size.width
         let currentPage:Int = Int(imageCollectionView.contentOffset.x/pageWidth)
