@@ -9,36 +9,87 @@
 import UIKit
 import AVFoundation
 import Photos
-import GLKit
 import QuartzCore
 
-class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,CameraControllerDelegate{
+let Tonal = "Tonal"
+let TonalFilter = CIFilter(name: "CIPhotoEffectTonal")
+
+let Noir = "Noir"
+let NoirFilter = CIFilter(name: "CIPhotoEffectNoir")
+
+let Mono = "Mono"
+let MonoFilter = CIFilter(name: "CIPhotoEffectMono")
+
+let Gaussian = "Gaussian Blur"
+let GaussianEffectFilter = CIFilter(name: "CIGaussianBlur")
+
+let CMYKHalftone = "CMYK Halftone"
+let CMYKHalftoneFilter = CIFilter(name: "CICMYKHalftone")
+
+let ComicEffect = "Comic Effect"
+let ComicEffectFilter = CIFilter(name: "CIComicEffect")
+
+let Crystallize = "Crystallize"
+let CrystallizeFilter = CIFilter(name: "CICrystallize")
+
+let Edges = "Edges"
+let EdgesEffectFilter = CIFilter(name: "CIEdges")
+
+let HexagonalPixellate = "Hex Pixellate"
+let HexagonalPixellateFilter = CIFilter(name: "CIHexagonalPixellate")
+
+let Invert = "Invert"
+let InvertFilter = CIFilter(name: "CIColorInvert")
+
+let Pointillize = "Pointillize"
+let PointillizeFilter = CIFilter(name: "CIPointillize")
+
+let LineOverlay = "Line Overlay"
+let LineOverlayFilter = CIFilter(name: "CILineOverlay")
+
+let Posterize = "Posterize"
+let PosterizeFilter = CIFilter(name: "CIColorPosterize")
+
+
+let Filters = [
+    (Tonal,TonalFilter),
+    (Noir,NoirFilter),
+    (Mono,MonoFilter),
+    (Gaussian,GaussianEffectFilter),
+    (CMYKHalftone, CMYKHalftoneFilter),
+    (ComicEffect, ComicEffectFilter),
+    (Crystallize, CrystallizeFilter),
+    (Edges, EdgesEffectFilter),
+    (HexagonalPixellate, HexagonalPixellateFilter),
+    (Invert, InvertFilter),
+    (Pointillize, PointillizeFilter),
+    (LineOverlay, LineOverlayFilter),
+    (Posterize, PosterizeFilter)
+]
+
+let filterTypeArray = Filters.map({$0.1})
+let filterName = Filters.map({$0.0})
+
+class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,CameraControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource {
     
     let Album_Title = "CamCam"
     
+    @IBOutlet var previewImage: UIImageView!
     @IBOutlet var photoLibraryImageView: UIImageView!
     @IBOutlet var photoLibrarybutton: UIButton!
     @IBOutlet var captureView: PreviewView!
     @IBOutlet var recoderTimeLabel: UILabel!
     @IBOutlet var captureButton: UIButton!
     
+    @IBOutlet var filterCollectionview: UICollectionView!
     var touchPoint : CGPoint?
-    //    var image: UIImage!
-    //    var assetCollection: PHAssetCollection!
-    //    var photosAsset: PHFetchResult<AnyObject>!
-    //    var assetThumbnailSize:CGSize!
-    //    var collection: PHAssetCollection!
-    //    var assetCollectionPlaceholder: PHObjectPlaceholder!
     var timer : Timer?
-    
     var timeInMinute :Int = 0
     var timeInSec :Int = 0
     var timeInHour :Int = 0
-    
     // session
     var session : AVCaptureSession?
     
-    //    var previewLayer :AVCaptureVideoPreviewLayer?
     var camFocus : CameraFocusSquareView?
     var isPhoto : Bool = true
     var isFrontCamera : Bool = false
@@ -52,11 +103,14 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         cameraController = CameraController()
         // Do any additional setup after loading the view.
         cameraController?.delegate = self
         
         session = cameraController?.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
+        
         getImageAfterImageSave()
         photoLibrarybutton.layer.cornerRadius = photoLibrarybutton.frame.size.width/2
         photoLibraryImageView.layer.cornerRadius = photoLibrarybutton.frame.size.width/2
@@ -144,10 +198,12 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         
     }
     
-    func capturedImage(image:CIImage) {
+    func capturedImage(image:UIImage) {
         
         DispatchQueue.main.sync(execute: {
-            captureView.videoPreviewLayer.contents = image
+            
+            previewImage.image = image
+            
         })
         
     }
@@ -184,7 +240,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
             } else {
                 
                 self.recoderTimeLabel.isHidden = false
-                self.recoderTimeLabel.text = String(format :"%2d : %2d : %2d",timeInHour,timeInMinute,timeInSec)
+                self.recoderTimeLabel.text = String(format :"%02d : %02d : %02d",timeInHour,timeInMinute,timeInSec)
                 
                 self.captureButton.setTitle("Stop", for: UIControlState.normal)
                 
@@ -192,9 +248,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
                 timer?.fire()
                 cameraController?.capture()
             }
-            
         }
-        
     }
     
     //MARK: - Shows alert when image is saved
@@ -224,7 +278,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         
         camFocus = CameraFocusSquareView(frame: CGRect(x: (touchPoint?.x)!-45, y: (touchPoint?.y)!-45, width:90, height: 90))
         camFocus?.backgroundColor = UIColor.clear
-        captureView.addSubview(camFocus!)
+        self.view.addSubview(camFocus!)
         camFocus?.setNeedsDisplay()
         
         UIView.beginAnimations(nil, context: nil)
@@ -234,12 +288,6 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     }
     
     //MARK: - UIButton Actions
-    
-    @IBAction func shoImageBtnPressed(_ sender: UIButton) {
-        
-        
-        
-    }
     
     @IBAction func swapBtnPressed(_ sender: UIButton) {
         
@@ -269,7 +317,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
                 timeInHour+=1
             }
         }
-        self.recoderTimeLabel.text = String(format :"%2d : %2d : %2d",timeInHour,timeInMinute,timeInSec)
+        self.recoderTimeLabel.text = String(format :"%2d : %02d : %2d",timeInHour,timeInMinute,timeInSec)
     }
     
     override func didReceiveMemoryWarning() {
@@ -277,6 +325,24 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: - UICollectionViewDelegate And DataSource
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return filterTypeArray.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell : FilterCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "fCell", for: indexPath) as! FilterCollectionViewCell
+        
+        cell.filterNameLabel.text = filterName[indexPath.row]
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        cameraController?.selectedFilter = filterTypeArray[indexPath.row]!
+    }
     
     // MARK: - Navigation
     

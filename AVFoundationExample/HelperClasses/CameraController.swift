@@ -12,56 +12,15 @@ import Photos
 
 protocol CameraControllerDelegate{
     func getImageAfterImageSave()
-    func capturedImage(image:CIImage)
+    func capturedImage(image:UIImage)
 }
-
-let CMYKHalftone = "CMYK Halftone"
-let CMYKHalftoneFilter = CIFilter(name: "CICMYKHalftone", withInputParameters: ["inputWidth" : 20, "inputSharpness": 1])
-
-let ComicEffect = "Comic Effect"
-let ComicEffectFilter = CIFilter(name: "CIComicEffect")
-
-let Crystallize = "Crystallize"
-let CrystallizeFilter = CIFilter(name: "CICrystallize", withInputParameters: ["inputRadius" : 30])
-
-let Edges = "Edges"
-let EdgesEffectFilter = CIFilter(name: "CIEdges", withInputParameters: ["inputIntensity" : 10])
-
-let HexagonalPixellate = "Hex Pixellate"
-let HexagonalPixellateFilter = CIFilter(name: "CIHexagonalPixellate", withInputParameters: ["inputScale" : 40])
-
-let Invert = "Invert"
-let InvertFilter = CIFilter(name: "CIColorInvert")
-
-let Pointillize = "Pointillize"
-let PointillizeFilter = CIFilter(name: "CIPointillize", withInputParameters: ["inputRadius" : 30])
-
-let LineOverlay = "Line Overlay"
-let LineOverlayFilter = CIFilter(name: "CILineOverlay")
-
-let Posterize = "Posterize"
-let PosterizeFilter = CIFilter(name: "CIColorPosterize", withInputParameters: ["inputLevels" : 5])
-
-let Filters = [
-    CMYKHalftone: CMYKHalftoneFilter,
-    ComicEffect: ComicEffectFilter,
-    Crystallize: CrystallizeFilter,
-    Edges: EdgesEffectFilter,
-    HexagonalPixellate: HexagonalPixellateFilter,
-    Invert: InvertFilter,
-    Pointillize: PointillizeFilter,
-    LineOverlay: LineOverlayFilter,
-    Posterize: PosterizeFilter
-]
-
-let FilterNames = [String](Filters.keys).sorted()
-
 
 class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutputRecordingDelegate,AVCaptureVideoDataOutputSampleBufferDelegate {
     
     var delegate:CameraControllerDelegate?
     var session : AVCaptureSession?
-    var stillImageOutput : AVCaptureVideoDataOutput?
+    var stillImageOutput : AVCapturePhotoOutput?
+    var videoDataOutput : AVCaptureVideoDataOutput?
     var videoOutput : AVCaptureMovieFileOutput?
     var previewLayer :AVCaptureVideoPreviewLayer?
     var captureDevice:AVCaptureDevice?
@@ -80,9 +39,24 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
     var isFrontCam : Bool?
     var albumFound : Bool = false
     var resultImage : Any?
-    var image: UIImage!
+    var filteredImage : UIImage?
+    //    var outputImage : UIImage?
+    
+    
+    override init() {
+        super.init()
+        selectedFilter = nil
+    }
+    
+    var selectedFilter: CIFilter? {
+        
+        willSet {
+            self.selectedFilter = newValue
+        }
+    }
     
     func setupCamera(withPhoto:Bool, isFrontCamera: Bool) -> AVCaptureSession{
+        
         
         isPhoto = withPhoto
         isFrontCam = isFrontCamera
@@ -117,8 +91,26 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             audioCaptureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeAudio)
         }
         
+        // output
+        videoDataOutput = AVCaptureVideoDataOutput()
+        
+        let newSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable:kCVPixelFormatType_32BGRA as Any]
+        videoDataOutput?.videoSettings = newSettings
+        // discard if the data output queue is blocked (as we process the still image
+        videoDataOutput?.alwaysDiscardsLateVideoFrames = true
+        
+        let videoDataOutputQueue = DispatchQueue(label: "VideoDataOutputQueue")
+        videoDataOutput?.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
+        
+        if ( session?.canAddOutput(videoDataOutput))! {
+            session?.addOutput(videoDataOutput)
+        }
+        
         // photo output
-        stillImageOutput = AVCaptureVideoDataOutput()
+        
+        stillImageOutput = AVCapturePhotoOutput()
+        stillImageOutput?.isHighResolutionCaptureEnabled = true
+        stillImageOutput?.isLivePhotoCaptureEnabled = (stillImageOutput?.isLivePhotoCaptureSupported)!
         
         //video output
         videoOutput = AVCaptureMovieFileOutput()
@@ -189,10 +181,10 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             
             input = try AVCaptureDeviceInput(device: captureDevice)
             
+            
             if (error == nil && session!.canAddInput(input)) {
                 
                 session?.addInput(input)
-                stillImageOutput?.setSampleBufferDelegate(self as AVCaptureVideoDataOutputSampleBufferDelegate, queue: DispatchQueue(label: "sample buffer delegate", attributes: []))
                 
                 if session!.canAddOutput(stillImageOutput) {
                     session?.addOutput(stillImageOutput)
@@ -294,15 +286,13 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             
             if (stillImageOutput!.connection(withMediaType: AVMediaTypeVideo)) != nil {
                 
-                // settings
+                //  photo settings
                 let settings = AVCapturePhotoSettings()
                 let previewPixelType = settings.availablePreviewPhotoPixelFormatTypes.first!
-                let previewFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType,kCVPixelBufferWidthKey as String: 160,kCVPixelBufferHeightKey as String: 160,
-                                     ]
+                let previewFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType,kCVPixelBufferWidthKey as String: 160,kCVPixelBufferHeightKey as String: 160]
                 settings.previewPhotoFormat = previewFormat
-                //                self.stillImageOutput?.capturePhoto(with: settings, delegate: self as AVCapturePhotoCaptureDelegate)
                 
-                
+                self.stillImageOutput?.capturePhoto(with: settings, delegate: self as AVCapturePhotoCaptureDelegate)
             }
         } else {
             
@@ -343,41 +333,50 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
     
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
         
-        guard let filter = Filters[FilterNames[2]] else
-        {
-            return
-        }
+        connection.videoOrientation = .portrait
         let pixelBuffer  :CVPixelBuffer  = CMSampleBufferGetImageBuffer(sampleBuffer)!
         let image = CIImage(cvPixelBuffer: pixelBuffer)
+        let context = CIContext(options:nil)
         
-        filter!.setValue(image, forKey: kCIInputImageKey)
-        
-        let filteredImage : CIImage = filter!.value(forKey: kCIOutputImageKey) as! CIImage
-        
-        delegate?.capturedImage(image: filteredImage)
-    
+        if (selectedFilter != nil) {
+            
+            selectedFilter?.setValue(image, forKey: kCIInputImageKey)
+            
+            
+            guard let output = selectedFilter?.value(forKey: kCIOutputImageKey) as? CIImage else {
+                print("CIFilter failed to render image")
+                return
+            }
+            let cgimg = context.createCGImage(output, from: output.extent)
+            filteredImage = UIImage(cgImage: cgimg!)
+        } else {
+            
+            let cgimg = context.createCGImage(image, from: image.extent)
+            filteredImage = UIImage(cgImage: cgimg!)
+        }
+        delegate?.capturedImage(image: filteredImage!)
     }
     
-    //    func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
-    //
-    //        if let error = error {
-    //            print(error.localizedDescription)
-    //        }
-    //
-    //        if let sampleBuffer = photoSampleBuffer, let previewBuffer = previewPhotoSampleBuffer , let dataImage = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: sampleBuffer, previewPhotoSampleBuffer: previewBuffer) {
-    //
-    //            let dataProvider = CGDataProvider(data: dataImage as CFData)
-    //            let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
-    //            image = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.right)
-    //
-    //            saveImage()
-    //        }
-    //    }
+    func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
+        
+        if let error = error {
+            print(error.localizedDescription)
+        }
+        
+        if let sampleBuffer = photoSampleBuffer, let previewBuffer = previewPhotoSampleBuffer , let dataImage = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: sampleBuffer, previewPhotoSampleBuffer: previewBuffer) {
+            
+            let dataProvider = CGDataProvider(data: dataImage as CFData)
+            let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+            //                outputImage = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.right)
+            
+            saveImage()
+        }
+    }
     
     func saveImage() {
         
         PHPhotoLibrary.shared().performChanges({
-            let assetRequest = PHAssetChangeRequest.creationRequestForAsset(from: self.image)
+            let assetRequest = PHAssetChangeRequest.creationRequestForAsset(from: self.filteredImage!)
             let assetPlaceholder = assetRequest.placeholderForCreatedAsset
             let albumChangeRequest = PHAssetCollectionChangeRequest(for: self.assetCollection)
             albumChangeRequest?.addAssets([assetPlaceholder!] as NSArray)
