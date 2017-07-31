@@ -336,7 +336,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         connection.videoOrientation = .portrait
         let pixelBuffer  :CVPixelBuffer  = CMSampleBufferGetImageBuffer(sampleBuffer)!
         let image = CIImage(cvPixelBuffer: pixelBuffer)
-        let context = CIContext(options:nil)
+        
         
         if (selectedFilter != nil) {
             
@@ -347,10 +347,11 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
                 print("CIFilter failed to render image")
                 return
             }
+            let context = CIContext(options:nil)
             let cgimg = context.createCGImage(output, from: output.extent)
             filteredImage = UIImage(cgImage: cgimg!)
         } else {
-            
+            let context = CIContext(options:nil)
             let cgimg = context.createCGImage(image, from: image.extent)
             filteredImage = UIImage(cgImage: cgimg!)
         }
@@ -388,7 +389,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             print(error ?? "error")
         }
         
-    
+        
     }
     
 }
