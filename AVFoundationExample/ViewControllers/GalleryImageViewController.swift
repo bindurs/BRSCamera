@@ -185,7 +185,6 @@ class GalleryImageViewController: UIViewController ,UICollectionViewDelegate , U
             
             return(player.currentItem?.duration)!
         }
-        
         return(kCMTimeInvalid);
     }
     

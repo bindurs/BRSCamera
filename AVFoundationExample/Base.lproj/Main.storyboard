@@ -33,6 +33,10 @@
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Jds-K1-3Mj">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" red="1" green="0.87868378560000004" blue="0.257331533" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xvz-lj-hTx">
                                 <rect key="frame" x="20" y="30" width="45.5" height="26.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
@@ -57,7 +61,6 @@
                                             <constraint firstAttribute="width" secondItem="uby-Ri-asl" secondAttribute="height" id="vp9-Hn-48C"/>
                                         </constraints>
                                         <connections>
-                                            <action selector="shoImageBtnPressed:" destination="2gv-lR-3lY" eventType="touchUpInside" id="rST-2S-gj9"/>
                                             <segue destination="IDp-Hv-Cs5" kind="show" id="G8O-1Q-ji4"/>
                                         </connections>
                                     </button>
@@ -112,31 +115,85 @@
                                     <action selector="switchCameraBtnPressed:" destination="2gv-lR-3lY" eventType="touchUpInside" id="WuH-VR-UcI"/>
                                 </connections>
                             </button>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="36g-f9-M9S">
+                                <rect key="frame" x="0.0" y="403" width="320" height="75"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="75" id="HXN-ed-z2G"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="5" minimumInteritemSpacing="0.0" id="rYd-3G-gf8">
+                                    <size key="itemSize" width="77" height="76"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="fCell" id="dQO-Rh-ihe" customClass="FilterCollectionViewCell" customModule="AVFoundationExample" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="-0.5" width="77" height="76"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="77" height="76"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EJk-MF-3B2">
+                                                    <rect key="frame" x="0.0" y="0.0" width="77" height="76"/>
+                                                    <color key="backgroundColor" red="0.49223736702127663" green="0.49223736702127663" blue="0.49223736702127663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" name="ChalkboardSE-Bold" family="Chalkboard SE" pointSize="18"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="EJk-MF-3B2" firstAttribute="top" secondItem="dQO-Rh-ihe" secondAttribute="top" id="1rB-Bo-ngY"/>
+                                            <constraint firstItem="EJk-MF-3B2" firstAttribute="leading" secondItem="dQO-Rh-ihe" secondAttribute="leading" id="5Ut-K1-grc"/>
+                                            <constraint firstAttribute="bottom" secondItem="EJk-MF-3B2" secondAttribute="bottom" id="Wz0-XO-6Hm"/>
+                                            <constraint firstAttribute="trailing" secondItem="EJk-MF-3B2" secondAttribute="trailing" id="qOv-Ub-TVc"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="filterNameLabel" destination="EJk-MF-3B2" id="N74-vO-Lfh"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="2gv-lR-3lY" id="mll-2l-Mq1"/>
+                                    <outlet property="delegate" destination="2gv-lR-3lY" id="qmX-SP-xe1"/>
+                                </connections>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Tim-X0-gxb" firstAttribute="top" secondItem="i4f-VF-mFq" secondAttribute="bottom" id="1YJ-5s-Kjg"/>
                             <constraint firstAttribute="trailing" secondItem="MeY-6k-9kM" secondAttribute="trailing" id="3XY-Wh-bPX"/>
+                            <constraint firstItem="Jds-K1-3Mj" firstAttribute="top" secondItem="6So-hb-vAN" secondAttribute="top" id="4cU-2Y-9DJ"/>
+                            <constraint firstItem="Jds-K1-3Mj" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" id="9j4-D0-11l"/>
+                            <constraint firstItem="MeY-6k-9kM" firstAttribute="top" secondItem="36g-f9-M9S" secondAttribute="bottom" id="C3M-4M-8VP"/>
                             <constraint firstItem="Xvz-lj-hTx" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" constant="20" id="JXw-AR-mfL"/>
                             <constraint firstItem="Tim-X0-gxb" firstAttribute="width" secondItem="8Ma-RV-SYK" secondAttribute="width" id="VYi-7E-bzV"/>
                             <constraint firstAttribute="trailing" secondItem="Tim-X0-gxb" secondAttribute="trailing" constant="10" id="b9h-af-GZC"/>
+                            <constraint firstItem="36g-f9-M9S" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" id="blb-cA-Li3"/>
                             <constraint firstItem="Xvz-lj-hTx" firstAttribute="top" secondItem="i4f-VF-mFq" secondAttribute="bottom" constant="10" id="cxm-Op-1FT"/>
                             <constraint firstItem="H8D-gK-X1k" firstAttribute="top" secondItem="B1o-lf-L4Z" secondAttribute="bottom" id="fT1-b8-k3Y"/>
                             <constraint firstItem="H8D-gK-X1k" firstAttribute="top" secondItem="MeY-6k-9kM" secondAttribute="bottom" id="gYu-s2-sUn"/>
                             <constraint firstAttribute="width" secondItem="Tim-X0-gxb" secondAttribute="width" multiplier="8" id="glA-E4-ED8"/>
                             <constraint firstAttribute="trailing" secondItem="B1o-lf-L4Z" secondAttribute="trailing" id="iTa-1d-ToJ"/>
+                            <constraint firstAttribute="bottom" secondItem="Jds-K1-3Mj" secondAttribute="bottom" id="jaF-Fm-TNM"/>
                             <constraint firstItem="B1o-lf-L4Z" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" id="mRe-M4-iHw"/>
                             <constraint firstItem="B1o-lf-L4Z" firstAttribute="top" secondItem="6So-hb-vAN" secondAttribute="top" id="nf1-R5-T5c"/>
                             <constraint firstItem="MeY-6k-9kM" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" id="oIK-AB-Vix"/>
+                            <constraint firstAttribute="trailing" secondItem="Jds-K1-3Mj" secondAttribute="trailing" id="usW-vQ-Kq1"/>
+                            <constraint firstAttribute="trailing" secondItem="36g-f9-M9S" secondAttribute="trailing" id="xyF-nn-JU2"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
                     <connections>
                         <outlet property="captureButton" destination="er7-Pf-Bcu" id="g6I-kx-Pcg"/>
                         <outlet property="captureView" destination="B1o-lf-L4Z" id="sRz-Uh-KZC"/>
+                        <outlet property="filterCollectionview" destination="36g-f9-M9S" id="Hw7-y8-Kid"/>
                         <outlet property="photoLibraryImageView" destination="9cy-IM-BCp" id="lCX-lZ-tPZ"/>
                         <outlet property="photoLibrarybutton" destination="uby-Ri-asl" id="xQa-qu-odC"/>
+                        <outlet property="previewImage" destination="Jds-K1-3Mj" id="fbC-ES-dSS"/>
                         <outlet property="recoderTimeLabel" destination="Xvz-lj-hTx" id="0dt-7i-9bA"/>
                     </connections>
                 </viewController>
@@ -235,7 +292,7 @@
                     </connections>
                 </pinchGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1213.125" y="79.225352112676063"/>
+            <point key="canvasLocation" x="1170" y="78"/>
         </scene>
     </scenes>
     <resources>

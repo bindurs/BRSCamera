@@ -21,6 +21,7 @@
 		F459DC051F2077CE00EFBAAE /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F459DC041F2077CE00EFBAAE /* CameraController.swift */; };
 		F45F40CE1F1F146100A77719 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45F40CD1F1F146100A77719 /* OpenGLES.framework */; };
 		F45F40D01F1F146900A77719 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45F40CF1F1F146900A77719 /* CoreImage.framework */; };
+		F47082E81F28571C00BFF60D /* FilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47082E71F28571C00BFF60D /* FilterCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		F459DC041F2077CE00EFBAAE /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		F45F40CD1F1F146100A77719 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		F45F40CF1F1F146900A77719 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		F47082E71F28571C00BFF60D /* FilterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				F43994AD1F160B4F00096217 /* ImageCollectionViewCell.swift */,
+				F47082E71F28571C00BFF60D /* FilterCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				F43994AE1F160B4F00096217 /* ImageCollectionViewCell.swift in Sources */,
 				F43994AB1F160B2800096217 /* CaptureViewController.swift in Sources */,
 				F43994AC1F160B2800096217 /* GalleryImageViewController.swift in Sources */,
+				F47082E81F28571C00BFF60D /* FilterCollectionViewCell.swift in Sources */,
 				F43994AA1F160B2800096217 /* CameraFocusSquareView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

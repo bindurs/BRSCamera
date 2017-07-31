@@ -17,12 +17,12 @@ class CameraFocusSquareView: UIView {
         
         self.backgroundColor = UIColor.clear
         self.layer.borderWidth = 1.0
-        self.layer.cornerRadius = 3.0
+        self.layer.cornerRadius = 2.0
         self.layer.borderColor = UIColor.white.cgColor
         
         let selectionAnimation = CABasicAnimation(keyPath: "borderColor")
-        selectionAnimation.toValue = UIColor.blue.cgColor
-        selectionAnimation.repeatCount = 8
+        selectionAnimation.toValue = UIColor.gray.cgColor
+        selectionAnimation.repeatCount = 5
         self.layer.add(selectionAnimation, forKey: "selectionAnimation")
         
     }
