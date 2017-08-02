@@ -55,25 +55,13 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         }
     }
     
-    func setupCamera(withPhoto:Bool, isFrontCamera: Bool) -> AVCaptureSession{
-        
+    func setupCamera(withPhoto:Bool, isFrontCamera: Bool) -> AVCaptureSession {
         
         isPhoto = withPhoto
         isFrontCam = isFrontCamera
-        //        let audioSession = AVAudioSession.sharedInstance()
-        //        do {
-        //           try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with:[.defaultToSpeaker,.allowBluetooth])
-        //            try audioSession.setActive(true)
-        //        } catch let err as NSError {
-        //            error = err
-        //            input = nil
-        //            print(error!.localizedDescription)
-        //
-        //        }
         
         session = AVCaptureSession()
-        //        session?.usesApplicationAudioSession = true
-        //        session?.automaticallyConfiguresApplicationAudioSession = false
+        
         if (isFrontCamera) {
             
             let captureDeviceDiscoverySession = AVCaptureDeviceDiscoverySession(deviceTypes: [AVCaptureDeviceType.builtInWideAngleCamera], mediaType: AVMediaTypeVideo, position: .front)
@@ -91,6 +79,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             audioCaptureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeAudio)
         }
         
+        
         // output
         videoDataOutput = AVCaptureVideoDataOutput()
         
@@ -100,11 +89,9 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         videoDataOutput?.alwaysDiscardsLateVideoFrames = true
         
         let videoDataOutputQueue = DispatchQueue(label: "VideoDataOutputQueue")
-        videoDataOutput?.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
+        videoDataOutput?.setSampleBufferDelegate(self as AVCaptureVideoDataOutputSampleBufferDelegate, queue: videoDataOutputQueue)
         
-        if ( session?.canAddOutput(videoDataOutput))! {
-            session?.addOutput(videoDataOutput)
-        }
+        session?.addOutput(videoDataOutput)
         
         // photo output
         
@@ -121,6 +108,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         }
         session?.startRunning()
         createAlbum()
+        
         return session!
     }
     func setupVideoCamera() {
@@ -267,7 +255,6 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
                             } else {
                                 Faliure(["message" : "result not found"])
                             }
-                            
                         }
                     })
                 })
@@ -337,25 +324,26 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         let pixelBuffer  :CVPixelBuffer  = CMSampleBufferGetImageBuffer(sampleBuffer)!
         let image = CIImage(cvPixelBuffer: pixelBuffer)
         
-        
         if (selectedFilter != nil) {
             
+            selectedFilter!.setDefaults()
             selectedFilter?.setValue(image, forKey: kCIInputImageKey)
-            
             
             guard let output = selectedFilter?.value(forKey: kCIOutputImageKey) as? CIImage else {
                 print("CIFilter failed to render image")
                 return
             }
-            let context = CIContext(options:nil)
+            
+            let context = CIContext(options: [kCIContextUseSoftwareRenderer: true])
             let cgimg = context.createCGImage(output, from: output.extent)
             filteredImage = UIImage(cgImage: cgimg!)
         } else {
-            let context = CIContext(options:nil)
+            let context = CIContext(options: [kCIContextUseSoftwareRenderer: true])
             let cgimg = context.createCGImage(image, from: image.extent)
             filteredImage = UIImage(cgImage: cgimg!)
         }
         delegate?.capturedImage(image: filteredImage!)
+        
     }
     
     func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {

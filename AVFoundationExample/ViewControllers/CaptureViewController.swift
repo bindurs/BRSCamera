@@ -20,60 +20,84 @@ let NoirFilter = CIFilter(name: "CIPhotoEffectNoir")
 let Mono = "Mono"
 let MonoFilter = CIFilter(name: "CIPhotoEffectMono")
 
-let Gaussian = "Gaussian Blur"
-let GaussianEffectFilter = CIFilter(name: "CIGaussianBlur")
+let Fade = "Fade"
+let FadeEffectFilter = CIFilter(name: "CIPhotoEffectFade")
 
-let CMYKHalftone = "CMYK Halftone"
-let CMYKHalftoneFilter = CIFilter(name: "CICMYKHalftone")
+let Chrome = "Chrome"
+let ChromeEffectFilter = CIFilter(name: "CIPhotoEffectChrome")
 
-let ComicEffect = "Comic Effect"
-let ComicEffectFilter = CIFilter(name: "CIComicEffect")
+let Process = "Process"
+let ProcessEffectFilter = CIFilter(name: "CIPhotoEffectProcess")
 
-let Crystallize = "Crystallize"
-let CrystallizeFilter = CIFilter(name: "CICrystallize")
+let Transfer = "Transfer"
+let TransferEffectFilter = CIFilter(name: "CIPhotoEffectTransfer")
 
-let Edges = "Edges"
-let EdgesEffectFilter = CIFilter(name: "CIEdges")
+let Instant = "Instant"
+let InstantEffectFilter = CIFilter(name: "CIPhotoEffectInstant")
 
-let HexagonalPixellate = "Hex Pixellate"
-let HexagonalPixellateFilter = CIFilter(name: "CIHexagonalPixellate")
-
-let Invert = "Invert"
-let InvertFilter = CIFilter(name: "CIColorInvert")
-
-let Pointillize = "Pointillize"
-let PointillizeFilter = CIFilter(name: "CIPointillize")
-
-let LineOverlay = "Line Overlay"
-let LineOverlayFilter = CIFilter(name: "CILineOverlay")
-
-let Posterize = "Posterize"
-let PosterizeFilter = CIFilter(name: "CIColorPosterize")
+//let Gaussian = "Gaussian Blur"
+//let GaussianEffectFilter = CIFilter(name: "CIGaussianBlur")
+//
+//let CMYKHalftone = "CMYK Halftone"
+//let CMYKHalftoneFilter = CIFilter(name: "CICMYKHalftone")
+//
+//let ComicEffect = "Comic Effect"
+//let ComicEffectFilter = CIFilter(name: "CIComicEffect")
+//
+//let Crystallize = "Crystallize"
+//let CrystallizeFilter = CIFilter(name: "CICrystallize")
+//
+//let Edges = "Edges"
+//let EdgesEffectFilter = CIFilter(name: "CIEdges")
+//
+//let HexagonalPixellate = "Hex Pixellate"
+//let HexagonalPixellateFilter = CIFilter(name: "CIHexagonalPixellate")
+//
+//let Invert = "Invert"
+//let InvertFilter = CIFilter(name: "CIColorInvert")
+//
+//let Pointillize = "Pointillize"
+//let PointillizeFilter = CIFilter(name: "CIPointillize")
+//
+//let LineOverlay = "Line Overlay"
+//let LineOverlayFilter = CIFilter(name: "CILineOverlay")
+//
+//let Posterize = "Posterize"
+//let PosterizeFilter = CIFilter(name: "CIColorPosterize")
 
 
 let Filters = [
     (Tonal,TonalFilter),
     (Noir,NoirFilter),
     (Mono,MonoFilter),
-    (Gaussian,GaussianEffectFilter),
-    (CMYKHalftone, CMYKHalftoneFilter),
-    (ComicEffect, ComicEffectFilter),
-    (Crystallize, CrystallizeFilter),
-    (Edges, EdgesEffectFilter),
-    (HexagonalPixellate, HexagonalPixellateFilter),
-    (Invert, InvertFilter),
-    (Pointillize, PointillizeFilter),
-    (LineOverlay, LineOverlayFilter),
-    (Posterize, PosterizeFilter)
+    (Fade,FadeEffectFilter),
+    (Chrome,ChromeEffectFilter),
+    (Process,ProcessEffectFilter),
+    (Transfer,TransferEffectFilter),
+    (Instant,InstantEffectFilter)
+    //    (Gaussian,GaussianEffectFilter),
+    //    (CMYKHalftone, CMYKHalftoneFilter),
+    //    (ComicEffect, ComicEffectFilter),
+    //    (Crystallize, CrystallizeFilter),
+    //    (Edges, EdgesEffectFilter),
+    //    (HexagonalPixellate, HexagonalPixellateFilter),
+    //    (Invert, InvertFilter),
+    //    (Pointillize, PointillizeFilter),
+    //    (LineOverlay, LineOverlayFilter),
+    //    (Posterize, PosterizeFilter)
 ]
 
 let filterTypeArray = Filters.map({$0.1})
 let filterName = Filters.map({$0.0})
 
-class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,CameraControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource {
+class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,CameraControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
+    @IBOutlet var filterCollectionViewBottom: NSLayoutConstraint!
+    @IBOutlet var filterButton: UIButton!
+    @IBOutlet var switchButton: UIButton!
     let Album_Title = "CamCam"
     
+    @IBOutlet var bottomView: UIView!
     @IBOutlet var previewImage: UIImageView!
     @IBOutlet var photoLibraryImageView: UIImageView!
     @IBOutlet var photoLibrarybutton: UIButton!
@@ -92,6 +116,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     
     var camFocus : CameraFocusSquareView?
     var isPhoto : Bool = true
+    var isSelected : Bool = true
     var isFrontCamera : Bool = false
     var albumFound : Bool = false
     
@@ -103,7 +128,6 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
         cameraController = CameraController()
         // Do any additional setup after loading the view.
         cameraController?.delegate = self
@@ -121,20 +145,12 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         captureView.addGestureRecognizer(tap)
         
         self.recoderTimeLabel.isHidden = true
-
+        filterCollectionview.isHidden = true
+        filterCollectionViewBottom.constant = -(bottomView.frame.size.height+filterCollectionview.frame.size.height)
         captureView.session = session
     }
     
     // MARK:- Methods
-    
-    @IBAction func switchCameraBtnPressed(_ sender: UIButton) {
-        
-        isFrontCamera = !isFrontCamera
-        session?.stopRunning()
-        session = cameraController?.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
-        captureView.session = session
-    }
-    
     
     func focus(aPoint:CGPoint) {
         
@@ -204,9 +220,78 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
             previewImage.image = image
             
         })
-        
     }
     //MARK: - Button Actions
+    
+    @IBAction func swapBtnPressed(_ sender: UIButton) {
+        
+        cameraController?.delegate = self
+        session?.stopRunning()
+        
+        session = cameraController?.setupCamera(withPhoto: !isPhoto, isFrontCamera: isFrontCamera)
+        
+        if isPhoto {
+            sender.setImage(#imageLiteral(resourceName: "camera"), for: UIControlState.normal)
+            filterCollectionview.isHidden = true
+            previewImage.isHidden = true
+            captureView.session = session
+            filterButton.isHidden = true
+            
+        } else {
+            previewImage.isHidden = false
+            sender.setImage(#imageLiteral(resourceName: "videocam"), for: UIControlState.normal)
+            invalidateTimer()
+            filterButton.isHidden = false
+        }
+        isPhoto = !isPhoto
+    }
+    
+    @IBAction func switchCameraBtnPressed(_ sender: UIButton) {
+        
+        isFrontCamera = !isFrontCamera
+        session?.stopRunning()
+        session = cameraController?.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
+        
+        if isPhoto {
+            previewImage.isHidden = false
+            invalidateTimer()
+            filterButton.isHidden = false
+        } else {
+            filterCollectionview.isHidden = true
+            previewImage.isHidden = true
+            captureView.session = session
+            filterButton.isHidden = true
+        }
+    }
+    
+    @IBAction func filterBtnClicked(_ sender: UIButton) {
+        
+        if isSelected {
+            
+            filterCollectionview.isHidden = false
+            filterCollectionViewBottom.constant = 0
+            self.view.needsUpdateConstraints()
+            UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
+                self.view.layoutIfNeeded()
+            }, completion: { value in
+                
+            })
+            UIView.commitAnimations()
+            
+        } else {
+            
+            filterCollectionViewBottom.constant = -(bottomView.frame.size.height+filterCollectionview.frame.size.height)
+            self.view.needsUpdateConstraints()
+            UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
+                self.view.layoutIfNeeded()
+            }, completion: { value in
+                self.filterCollectionview.isHidden = true
+            })
+            UIView.commitAnimations()
+            
+        }
+        isSelected = !isSelected
+    }
     
     @IBAction func captureBtnClicked(_ sender: UIButton) {
         
@@ -286,24 +371,6 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         UIView.commitAnimations()
     }
     
-    //MARK: - UIButton Actions
-    
-    @IBAction func swapBtnPressed(_ sender: UIButton) {
-        
-        cameraController?.delegate = self
-       
-        if isPhoto {
-            sender.setImage(#imageLiteral(resourceName: "camera"), for: UIControlState.normal)
-            cameraController?.setupVideoCamera()
-            
-        } else {
-            sender.setImage(#imageLiteral(resourceName: "videocam"), for: UIControlState.normal)
-            invalidateTimer()
-            cameraController?.setupPicCamera()
-        }
-        isPhoto = !isPhoto
-    }
-    
     //MARK: - NSTimer
     
     func timerOnVideoCapture(timer:Timer)  {
@@ -329,20 +396,36 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     //MARK: - UICollectionViewDelegate And DataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return filterTypeArray.count
+        return filterTypeArray.count+1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell : FilterCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "fCell", for: indexPath) as! FilterCollectionViewCell
         
-        cell.filterNameLabel.text = filterName[indexPath.row]
+        if (indexPath.row == 0) {
+            cell.filterNameLabel.text = "None"
+        } else {
+            cell.filterNameLabel.text = filterName[indexPath.row-1]
+        }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        cameraController?.selectedFilter = filterTypeArray[indexPath.row]!
+        
+        if (indexPath.row == 0) {
+            cameraController?.selectedFilter = nil
+        } else {
+            session?.stopRunning()
+            session =  cameraController?.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
+            cameraController?.selectedFilter = filterTypeArray[indexPath.row-1]!
+        }
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 75, height: 75)
     }
     
     // MARK: - Navigation

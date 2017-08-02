@@ -28,15 +28,15 @@ class PreviewView: UIView {
     }
     private var orientationMap: [UIDeviceOrientation : AVCaptureVideoOrientation] = [
         .portrait           : .portrait,
-        .portraitUpsideDown : .portraitUpsideDown,
-        .landscapeLeft      : .landscapeRight,
-        .landscapeRight     : .landscapeLeft,
+//        .portraitUpsideDown : .portraitUpsideDown,
+//        .landscapeLeft      : .landscapeRight,
+//        .landscapeRight     : .landscapeLeft,
         ]
     func updateVideoOrientationForDeviceOrientation() {
         if let videoPreviewLayerConnection = videoPreviewLayer.connection {
            // let deviceOrientation = UIDevice.current.orientation
-//            guard let newVideoOrientation = .p /*orientationMap[deviceOrientation],
-//                deviceOrientation.isPortrait || deviceOrientation.isLandscape*/
+//            guard let newVideoOrientation = orientationMap[deviceOrientation],
+//                deviceOrientation.isPortrait || deviceOrientation.isLandscape
 //                else {
 //                    return
 //            }
