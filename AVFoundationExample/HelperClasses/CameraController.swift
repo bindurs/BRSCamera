@@ -13,11 +13,15 @@ import Photos
 protocol CameraControllerDelegate{
     func getImageAfterImageSave()
     func capturedImage(image:UIImage)
+    func getCaptureDevice(device:AVCaptureDevice)
 }
 
 class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutputRecordingDelegate,AVCaptureVideoDataOutputSampleBufferDelegate {
     
     var delegate:CameraControllerDelegate?
+    var camFocus : CameraFocusSquareView?
+    
+    
     var session : AVCaptureSession?
     var stillImageOutput : AVCapturePhotoOutput?
     var videoDataOutput : AVCaptureVideoDataOutput?
@@ -25,7 +29,6 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
     var previewLayer :AVCaptureVideoPreviewLayer?
     var captureDevice:AVCaptureDevice?
     var audioCaptureDevice:AVCaptureDevice?
-    var camFocus : CameraFocusSquareView?
     var input : AVCaptureDeviceInput?
     var audioInput : AVCaptureDeviceInput?
     let Album_Title = "CamCam"
@@ -40,9 +43,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
     var albumFound : Bool = false
     var resultImage : Any?
     var filteredImage : UIImage?
-    //    var outputImage : UIImage?
-    
-    
+    var flashController = FlashController()
     override init() {
         super.init()
         selectedFilter = nil
@@ -55,6 +56,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         }
     }
     
+    //MARK:- Intial Setup
     func setupCamera(withPhoto:Bool, isFrontCamera: Bool) -> AVCaptureSession {
         
         isPhoto = withPhoto
@@ -108,6 +110,8 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         }
         session?.startRunning()
         createAlbum()
+        
+        delegate?.getCaptureDevice(device: captureDevice!)
         
         return session!
     }
@@ -186,6 +190,8 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         }
     }
     
+    //MARK:- Creating Custom Album
+    
     func createAlbum() {
         
         //Get PHFetch Options
@@ -217,6 +223,8 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             })
         }
     }
+    
+    //MARK:- Getting Last Image From Custom Album
     
     func getLastImageFromAlbum(Success:   @escaping ( _ success: UIImage) -> Void, Faliure:  @escaping ( _ faliure: NSDictionary) -> Void ) {
         
@@ -267,6 +275,8 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         }
     }
     
+    //MARK:- Capturing Video or Photo
+    
     func capture() {
         
         if isPhoto! {
@@ -274,11 +284,21 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             if (stillImageOutput!.connection(withMediaType: AVMediaTypeVideo)) != nil {
                 
                 //  photo settings
+                
                 let settings = AVCapturePhotoSettings()
                 let previewPixelType = settings.availablePreviewPhotoPixelFormatTypes.first!
                 let previewFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType,kCVPixelBufferWidthKey as String: 160,kCVPixelBufferHeightKey as String: 160]
                 settings.previewPhotoFormat = previewFormat
                 
+                if (captureDevice?.torchMode == .auto) {
+                    settings.flashMode = .auto
+                } else if (captureDevice?.torchMode == .on) {
+                    settings.flashMode = .on
+                } else {
+                    settings.flashMode = .off
+                }
+                
+                flashController.toggleFlash(session: session!)
                 self.stillImageOutput?.capturePhoto(with: settings, delegate: self as AVCapturePhotoCaptureDelegate)
             }
         } else {
@@ -295,7 +315,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         }
     }
     
-    //MARK: - Get completed video path
+    //MARK: - Get completed video path and saving video
     
     func capture(_ captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAt outputFileURL: URL!, fromConnections connections: [Any]!, error: Error!) {
         
@@ -303,6 +323,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         doVideoProcessing(outputPath: outputFileURL! as NSURL)
         
     }
+    
     func doVideoProcessing(outputPath:NSURL){
         
         PHPhotoLibrary.shared().performChanges({
@@ -317,6 +338,8 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             print(error ?? "error")
         }
     }
+    
+    //MARK:- Applying Filter
     
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
         
@@ -346,6 +369,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         
     }
     
+    //MARK:- Image Capture
     func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
         
         if let error = error {
@@ -361,6 +385,8 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             saveImage()
         }
     }
+    
+    //MARK:- Saving Image
     
     func saveImage() {
         

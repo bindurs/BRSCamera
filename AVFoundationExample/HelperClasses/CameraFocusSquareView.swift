@@ -9,9 +9,7 @@
 import UIKit
 
 class CameraFocusSquareView: UIView {
-    
-//    let squreLength : Float = 80.0
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         

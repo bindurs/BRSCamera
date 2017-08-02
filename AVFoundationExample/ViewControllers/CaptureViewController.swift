@@ -35,35 +35,21 @@ let TransferEffectFilter = CIFilter(name: "CIPhotoEffectTransfer")
 let Instant = "Instant"
 let InstantEffectFilter = CIFilter(name: "CIPhotoEffectInstant")
 
-//let Gaussian = "Gaussian Blur"
-//let GaussianEffectFilter = CIFilter(name: "CIGaussianBlur")
-//
-//let CMYKHalftone = "CMYK Halftone"
-//let CMYKHalftoneFilter = CIFilter(name: "CICMYKHalftone")
-//
-//let ComicEffect = "Comic Effect"
-//let ComicEffectFilter = CIFilter(name: "CIComicEffect")
-//
-//let Crystallize = "Crystallize"
-//let CrystallizeFilter = CIFilter(name: "CICrystallize")
-//
-//let Edges = "Edges"
-//let EdgesEffectFilter = CIFilter(name: "CIEdges")
-//
-//let HexagonalPixellate = "Hex Pixellate"
-//let HexagonalPixellateFilter = CIFilter(name: "CIHexagonalPixellate")
-//
-//let Invert = "Invert"
-//let InvertFilter = CIFilter(name: "CIColorInvert")
-//
-//let Pointillize = "Pointillize"
-//let PointillizeFilter = CIFilter(name: "CIPointillize")
-//
-//let LineOverlay = "Line Overlay"
-//let LineOverlayFilter = CIFilter(name: "CILineOverlay")
-//
-//let Posterize = "Posterize"
-//let PosterizeFilter = CIFilter(name: "CIColorPosterize")
+let Invert = "Invert"
+let InvertFilter = CIFilter(name: "CIColorInvert")
+
+let Posterize = "Posterize"
+let PosterizeFilter = CIFilter(name: "CIColorPosterize")
+
+let Gaussian = "Gaussian Blur"
+let GaussianEffectFilter = CIFilter(name: "CIGaussianBlur")
+
+let BoxBlur = "Box Blur"
+let BoxBlurEffectFilter = CIFilter(name: "CIBoxBlur")
+
+let DiscBlur = "Disc Blur"
+let DiscBlurEffectFilter = CIFilter(name: "CIDiscBlur")
+
 
 
 let Filters = [
@@ -74,17 +60,12 @@ let Filters = [
     (Chrome,ChromeEffectFilter),
     (Process,ProcessEffectFilter),
     (Transfer,TransferEffectFilter),
-    (Instant,InstantEffectFilter)
-    //    (Gaussian,GaussianEffectFilter),
-    //    (CMYKHalftone, CMYKHalftoneFilter),
-    //    (ComicEffect, ComicEffectFilter),
-    //    (Crystallize, CrystallizeFilter),
-    //    (Edges, EdgesEffectFilter),
-    //    (HexagonalPixellate, HexagonalPixellateFilter),
-    //    (Invert, InvertFilter),
-    //    (Pointillize, PointillizeFilter),
-    //    (LineOverlay, LineOverlayFilter),
-    //    (Posterize, PosterizeFilter)
+    (Instant,InstantEffectFilter),
+    (Invert,InvertFilter),
+    (Posterize,PosterizeFilter),
+    (Gaussian,GaussianEffectFilter),
+    (BoxBlur,BoxBlurEffectFilter),
+    (DiscBlur,DiscBlurEffectFilter)
 ]
 
 let filterTypeArray = Filters.map({$0.1})
@@ -92,35 +73,37 @@ let filterName = Filters.map({$0.0})
 
 class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,CameraControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
+    let Album_Title = "CamCam"
+    
     @IBOutlet var filterCollectionViewBottom: NSLayoutConstraint!
     @IBOutlet var filterButton: UIButton!
     @IBOutlet var switchButton: UIButton!
-    let Album_Title = "CamCam"
-    
     @IBOutlet var bottomView: UIView!
+    @IBOutlet var flashButton: UIButton!
     @IBOutlet var previewImage: UIImageView!
     @IBOutlet var photoLibraryImageView: UIImageView!
     @IBOutlet var photoLibrarybutton: UIButton!
-    @IBOutlet var captureView: PreviewView!
     @IBOutlet var recoderTimeLabel: UILabel!
     @IBOutlet var captureButton: UIButton!
-    
+    @IBOutlet var captureView: PreviewView!
     @IBOutlet var filterCollectionview: UICollectionView!
+    
+    var camFocus : CameraFocusSquareView?
+    var cameraController : CameraController?
+    var session : AVCaptureSession?
+    
     var touchPoint : CGPoint?
     var timer : Timer?
     var timeInMinute :Int = 0
     var timeInSec :Int = 0
     var timeInHour :Int = 0
     // session
-    var session : AVCaptureSession?
     
-    var camFocus : CameraFocusSquareView?
     var isPhoto : Bool = true
     var isSelected : Bool = true
     var isFrontCamera : Bool = false
     var albumFound : Bool = false
     
-    var cameraController: CameraController?
     
     override func viewWillDisappear(_ animated: Bool) {
         invalidateTimer()
@@ -128,8 +111,9 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        cameraController = CameraController()
         // Do any additional setup after loading the view.
+        
+        cameraController = CameraController()
         cameraController?.delegate = self
         
         session = cameraController?.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
@@ -138,6 +122,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         photoLibrarybutton.layer.cornerRadius = photoLibrarybutton.frame.size.width/2
         photoLibraryImageView.layer.cornerRadius = photoLibrarybutton.frame.size.width/2
         captureButton.layer.cornerRadius = captureButton.frame.size.width/2
+        
         
         //focus - tap gesture
         let tap : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(tapOnView(sender:)))
@@ -148,9 +133,23 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         filterCollectionview.isHidden = true
         filterCollectionViewBottom.constant = -(bottomView.frame.size.height+filterCollectionview.frame.size.height)
         captureView.session = session
+        
+        
     }
     
     // MARK:- Methods
+    
+    func getCaptureDevice(device : AVCaptureDevice) {
+        
+        if (device.torchMode == .auto) {
+            flashButton.setImage(#imageLiteral(resourceName: "auto_flash"), for: UIControlState.normal)
+        } else if (device.torchMode == .on) {
+            flashButton.setImage(#imageLiteral(resourceName: "flash_on"), for: UIControlState.normal)
+        } else {
+            flashButton.setImage(#imageLiteral(resourceName: "flash_off"), for: UIControlState.normal)
+        }
+        
+    }
     
     func focus(aPoint:CGPoint) {
         
@@ -238,6 +237,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
             filterButton.isHidden = true
             
         } else {
+            
             previewImage.isHidden = false
             sender.setImage(#imageLiteral(resourceName: "videocam"), for: UIControlState.normal)
             invalidateTimer()
@@ -293,6 +293,8 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         isSelected = !isSelected
     }
     
+    
+    
     @IBAction func captureBtnClicked(_ sender: UIButton) {
         
         if isPhoto {
@@ -335,6 +337,8 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         }
     }
     
+    @IBAction func flashBtnClicked(_ sender: UIButton) {
+    }
     //MARK: - Shows alert when image is saved
     func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafeRawPointer) {
         
@@ -348,7 +352,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         
     }
     
-    // MARK: - TapGesture Recogniser
+    // MARK: - Focus -TapGesture Recogniser
     func tapOnView(sender: UITapGestureRecognizer) {
         // handling code
         
@@ -371,7 +375,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         UIView.commitAnimations()
     }
     
-    //MARK: - NSTimer
+    //MARK: - Timer (Video Capture)
     
     func timerOnVideoCapture(timer:Timer)  {
         
@@ -388,12 +392,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         self.recoderTimeLabel.text = String(format :"%2d : %02d : %2d",timeInHour,timeInMinute,timeInSec)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    //MARK: - UICollectionViewDelegate And DataSource
+    //MARK: - UICollectionViewDelegate And DataSource (Filter List)
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filterTypeArray.count+1
@@ -438,5 +437,9 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         let vc :GalleryImageViewController = segue.destination as! GalleryImageViewController
         vc.assetCollection = cameraController?.assetCollection
     }
-    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
 }

@@ -13,6 +13,7 @@
 		F40D46051F0E0A0D00752B61 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F40D46031F0E0A0D00752B61 /* LaunchScreen.storyboard */; };
 		F40D460E1F0E0A2D00752B61 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F40D460D1F0E0A2D00752B61 /* AVFoundation.framework */; };
 		F40D46141F0E422400752B61 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F40D46131F0E422400752B61 /* Photos.framework */; };
+		F42000661F31C59E004CFA52 /* FlashController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42000651F31C59E004CFA52 /* FlashController.swift */; };
 		F43994AA1F160B2800096217 /* CameraFocusSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994A61F160B2800096217 /* CameraFocusSquareView.swift */; };
 		F43994AB1F160B2800096217 /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994A81F160B2800096217 /* CaptureViewController.swift */; };
 		F43994AC1F160B2800096217 /* GalleryImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994A91F160B2800096217 /* GalleryImageViewController.swift */; };
@@ -33,6 +34,7 @@
 		F40D46061F0E0A0D00752B61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F40D460D1F0E0A2D00752B61 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F40D46131F0E422400752B61 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		F42000651F31C59E004CFA52 /* FlashController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashController.swift; sourceTree = "<group>"; };
 		F43994A61F160B2800096217 /* CameraFocusSquareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFocusSquareView.swift; sourceTree = "<group>"; };
 		F43994A81F160B2800096217 /* CaptureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureViewController.swift; sourceTree = "<group>"; };
 		F43994A91F160B2800096217 /* GalleryImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryImageViewController.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 		F43994A51F160B2800096217 /* HelperClasses */ = {
 			isa = PBXGroup;
 			children = (
+				F42000651F31C59E004CFA52 /* FlashController.swift */,
 				F43994A61F160B2800096217 /* CameraFocusSquareView.swift */,
 				F459DC041F2077CE00EFBAAE /* CameraController.swift */,
 				F44A93D11F25C3B90007805A /* PreviewView.swift */,
@@ -207,6 +210,7 @@
 				F40D45FB1F0E0A0C00752B61 /* AppDelegate.swift in Sources */,
 				F44A93D21F25C3B90007805A /* PreviewView.swift in Sources */,
 				F43994AE1F160B4F00096217 /* ImageCollectionViewCell.swift in Sources */,
+				F42000661F31C59E004CFA52 /* FlashController.swift in Sources */,
 				F43994AB1F160B2800096217 /* CaptureViewController.swift in Sources */,
 				F43994AC1F160B2800096217 /* GalleryImageViewController.swift in Sources */,
 				F47082E81F28571C00BFF60D /* FilterCollectionViewCell.swift in Sources */,

@@ -79,9 +79,8 @@
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EJk-MF-3B2">
                                                     <rect key="frame" x="0.0" y="0.0" width="77" height="76"/>
-                                                    <color key="backgroundColor" red="0.49223736702127663" green="0.49223736702127663" blue="0.49223736702127663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <fontDescription key="fontDescription" name="ChalkboardSE-Bold" family="Chalkboard SE" pointSize="18"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNextCondensed-Medium" family="Avenir Next Condensed" pointSize="16"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -103,14 +102,14 @@
                                     <outlet property="delegate" destination="2gv-lR-3lY" id="qmX-SP-xe1"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RFc-eQ-ie1">
-                                <rect key="frame" x="265" y="70" width="45" height="45"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RFc-eQ-ie1">
+                                <rect key="frame" x="275" y="70" width="35" height="35"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="45" id="YSF-sm-pKo"/>
                                     <constraint firstAttribute="width" secondItem="RFc-eQ-ie1" secondAttribute="height" id="bGc-Nz-Dmi"/>
-                                    <constraint firstAttribute="height" constant="45" id="xri-0x-Zrx"/>
+                                    <constraint firstAttribute="height" constant="35" id="xri-0x-Zrx"/>
                                 </constraints>
+                                <state key="normal" image="filter"/>
                                 <connections>
                                     <action selector="filterBtnClicked:" destination="2gv-lR-3lY" eventType="touchUpInside" id="VgZ-vf-wXC"/>
                                 </connections>
@@ -173,6 +172,17 @@
                                     <constraint firstItem="er7-Pf-Bcu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="uby-Ri-asl" secondAttribute="trailing" constant="10" id="zL6-az-gm5"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2BX-l2-Bmc">
+                                <rect key="frame" x="20" y="30" width="35" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="Exy-P1-2NW"/>
+                                    <constraint firstAttribute="width" constant="35" id="zW6-5J-n8T"/>
+                                </constraints>
+                                <state key="normal" image="flash_off"/>
+                                <connections>
+                                    <action selector="flashBtnClicked:" destination="2gv-lR-3lY" eventType="touchUpInside" id="8Zm-vw-Vwb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -184,6 +194,7 @@
                             <constraint firstItem="Jds-K1-3Mj" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" id="9j4-D0-11l"/>
                             <constraint firstItem="MeY-6k-9kM" firstAttribute="top" secondItem="36g-f9-M9S" secondAttribute="bottom" id="C3M-4M-8VP"/>
                             <constraint firstItem="Xvz-lj-hTx" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" constant="20" id="JXw-AR-mfL"/>
+                            <constraint firstItem="2BX-l2-Bmc" firstAttribute="top" secondItem="i4f-VF-mFq" secondAttribute="bottom" constant="10" id="OgK-ik-JT0"/>
                             <constraint firstItem="RFc-eQ-ie1" firstAttribute="top" secondItem="Tim-X0-gxb" secondAttribute="bottom" constant="10" id="TRf-zb-kPG"/>
                             <constraint firstItem="Tim-X0-gxb" firstAttribute="width" secondItem="8Ma-RV-SYK" secondAttribute="width" id="VYi-7E-bzV"/>
                             <constraint firstAttribute="trailing" secondItem="Tim-X0-gxb" secondAttribute="trailing" constant="10" id="b9h-af-GZC"/>
@@ -197,6 +208,7 @@
                             <constraint firstItem="B1o-lf-L4Z" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" id="mRe-M4-iHw"/>
                             <constraint firstItem="B1o-lf-L4Z" firstAttribute="top" secondItem="6So-hb-vAN" secondAttribute="top" id="nf1-R5-T5c"/>
                             <constraint firstItem="MeY-6k-9kM" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" id="oIK-AB-Vix"/>
+                            <constraint firstItem="2BX-l2-Bmc" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" constant="20" id="umj-6C-NkW"/>
                             <constraint firstAttribute="trailing" secondItem="Jds-K1-3Mj" secondAttribute="trailing" id="usW-vQ-Kq1"/>
                             <constraint firstAttribute="trailing" secondItem="36g-f9-M9S" secondAttribute="trailing" id="xyF-nn-JU2"/>
                         </constraints>
@@ -209,6 +221,7 @@
                         <outlet property="filterButton" destination="RFc-eQ-ie1" id="hfH-fK-bjp"/>
                         <outlet property="filterCollectionViewBottom" destination="C3M-4M-8VP" id="In7-gl-hQL"/>
                         <outlet property="filterCollectionview" destination="36g-f9-M9S" id="Hw7-y8-Kid"/>
+                        <outlet property="flashButton" destination="2BX-l2-Bmc" id="NJh-st-3Gs"/>
                         <outlet property="photoLibraryImageView" destination="9cy-IM-BCp" id="lCX-lZ-tPZ"/>
                         <outlet property="photoLibrarybutton" destination="uby-Ri-asl" id="xQa-qu-odC"/>
                         <outlet property="previewImage" destination="Jds-K1-3Mj" id="fbC-ES-dSS"/>
@@ -311,10 +324,12 @@
                     </connections>
                 </pinchGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1170" y="78"/>
+            <point key="canvasLocation" x="1076" y="78"/>
         </scene>
     </scenes>
     <resources>
+        <image name="filter" width="512" height="512"/>
+        <image name="flash_off" width="512" height="512"/>
         <image name="play" width="512" height="512"/>
         <image name="swap" width="512" height="512"/>
         <image name="videocam" width="512" height="512"/>
