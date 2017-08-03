@@ -223,7 +223,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
             previewImage.isHidden = true
             captureView.session = session
             filterButton.isHidden = true
-            
+            cameraController.selectedFilter = nil
         } else {
             
             previewImage.isHidden = false

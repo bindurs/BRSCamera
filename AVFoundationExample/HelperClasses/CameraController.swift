@@ -375,7 +375,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             let cgimg = context.createCGImage(output, from: output.extent)
             filteredImage = UIImage(cgImage: cgimg!)
         } else {
-            let context = CIContext(options: [kCIContextUseSoftwareRenderer: true])
+            let context = CIContext(options: nil)
             let cgimg = context.createCGImage(image, from: image.extent)
             filteredImage = UIImage(cgImage: cgimg!)
         }
