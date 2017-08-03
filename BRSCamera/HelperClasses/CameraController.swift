@@ -1,10 +1,8 @@
 //
 //  CameraController.swift
-//  AVFoundationExample
+//  BRSCamera
 //
 //  Created by Bindu on 20/07/17.
-//  Copyright © 2017 Xminds. All rights reserved.
-//
 
 import UIKit
 import AVFoundation
@@ -136,9 +134,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
                 
                 if session!.canAddOutput(videoOutput) {
                     session!.addOutput(videoOutput)
-                    
-                    
-                    session!.commitConfiguration()
+                session!.commitConfiguration()
                 }
             }
         } catch let err as NSError {

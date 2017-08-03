@@ -173,10 +173,10 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2BX-l2-Bmc">
-                                <rect key="frame" x="20" y="30" width="35" height="35"/>
+                                <rect key="frame" x="20" y="25" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="Exy-P1-2NW"/>
-                                    <constraint firstAttribute="width" constant="35" id="zW6-5J-n8T"/>
+                                    <constraint firstAttribute="height" constant="40" id="Exy-P1-2NW"/>
+                                    <constraint firstAttribute="width" constant="40" id="zW6-5J-n8T"/>
                                 </constraints>
                                 <state key="normal" image="flash_off"/>
                                 <connections>
@@ -194,7 +194,7 @@
                             <constraint firstItem="Jds-K1-3Mj" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" id="9j4-D0-11l"/>
                             <constraint firstItem="MeY-6k-9kM" firstAttribute="top" secondItem="36g-f9-M9S" secondAttribute="bottom" id="C3M-4M-8VP"/>
                             <constraint firstItem="Xvz-lj-hTx" firstAttribute="leading" secondItem="6So-hb-vAN" secondAttribute="leading" constant="20" id="JXw-AR-mfL"/>
-                            <constraint firstItem="2BX-l2-Bmc" firstAttribute="top" secondItem="i4f-VF-mFq" secondAttribute="bottom" constant="10" id="OgK-ik-JT0"/>
+                            <constraint firstItem="2BX-l2-Bmc" firstAttribute="top" secondItem="i4f-VF-mFq" secondAttribute="bottom" constant="5" id="OgK-ik-JT0"/>
                             <constraint firstItem="RFc-eQ-ie1" firstAttribute="top" secondItem="Tim-X0-gxb" secondAttribute="bottom" constant="10" id="TRf-zb-kPG"/>
                             <constraint firstItem="Tim-X0-gxb" firstAttribute="width" secondItem="8Ma-RV-SYK" secondAttribute="width" id="VYi-7E-bzV"/>
                             <constraint firstAttribute="trailing" secondItem="Tim-X0-gxb" secondAttribute="trailing" constant="10" id="b9h-af-GZC"/>

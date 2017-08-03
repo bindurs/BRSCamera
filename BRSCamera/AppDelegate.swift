@@ -1,10 +1,8 @@
 //
 //  AppDelegate.swift
-//  AVFoundationExample
+//  BRSCamera
 //
 //  Created by Bindu on 06/07/17.
-//  Copyright © 2017 Xminds. All rights reserved.
-//
 
 import UIKit
 

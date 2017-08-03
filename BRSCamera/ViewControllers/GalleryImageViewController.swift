@@ -1,11 +1,8 @@
 //
 //  GalleryImageViewController.swift
-//  AVFoundationExample
+//  BRSCamera
 //
 //  Created by Bindu on 12/07/17.
-//  Copyright © 2017 Xminds. All rights reserved.
-//
-
 
 import UIKit
 import Photos

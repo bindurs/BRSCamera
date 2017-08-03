@@ -7,41 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F40D45FB1F0E0A0C00752B61 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40D45FA1F0E0A0C00752B61 /* AppDelegate.swift */; };
-		F40D46001F0E0A0D00752B61 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F40D45FE1F0E0A0D00752B61 /* Main.storyboard */; };
-		F40D46021F0E0A0D00752B61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F40D46011F0E0A0D00752B61 /* Assets.xcassets */; };
-		F40D46051F0E0A0D00752B61 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F40D46031F0E0A0D00752B61 /* LaunchScreen.storyboard */; };
 		F40D460E1F0E0A2D00752B61 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F40D460D1F0E0A2D00752B61 /* AVFoundation.framework */; };
 		F40D46141F0E422400752B61 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F40D46131F0E422400752B61 /* Photos.framework */; };
-		F43994AA1F160B2800096217 /* CameraFocusSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994A61F160B2800096217 /* CameraFocusSquareView.swift */; };
-		F43994AB1F160B2800096217 /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994A81F160B2800096217 /* CaptureViewController.swift */; };
-		F43994AC1F160B2800096217 /* GalleryImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994A91F160B2800096217 /* GalleryImageViewController.swift */; };
-		F43994AE1F160B4F00096217 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43994AD1F160B4F00096217 /* ImageCollectionViewCell.swift */; };
-		F44A93D21F25C3B90007805A /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44A93D11F25C3B90007805A /* PreviewView.swift */; };
-		F459DC051F2077CE00EFBAAE /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F459DC041F2077CE00EFBAAE /* CameraController.swift */; };
 		F45F40CE1F1F146100A77719 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45F40CD1F1F146100A77719 /* OpenGLES.framework */; };
 		F45F40D01F1F146900A77719 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45F40CF1F1F146900A77719 /* CoreImage.framework */; };
-		F47082E81F28571C00BFF60D /* FilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47082E71F28571C00BFF60D /* FilterCollectionViewCell.swift */; };
+		F4F940521F33018900A68570 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F940411F33018900A68570 /* AppDelegate.swift */; };
+		F4F940531F33018900A68570 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4F940421F33018900A68570 /* Assets.xcassets */; };
+		F4F940541F33018900A68570 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4F940431F33018900A68570 /* LaunchScreen.storyboard */; };
+		F4F940551F33018900A68570 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4F940451F33018900A68570 /* Main.storyboard */; };
+		F4F940561F33018900A68570 /* FilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F940481F33018900A68570 /* FilterCollectionViewCell.swift */; };
+		F4F940571F33018900A68570 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F940491F33018900A68570 /* ImageCollectionViewCell.swift */; };
+		F4F940581F33018900A68570 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F9404B1F33018900A68570 /* CameraController.swift */; };
+		F4F940591F33018900A68570 /* CameraFocusSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F9404C1F33018900A68570 /* CameraFocusSquareView.swift */; };
+		F4F9405A1F33018900A68570 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F9404D1F33018900A68570 /* PreviewView.swift */; };
+		F4F9405B1F33018900A68570 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4F9404E1F33018900A68570 /* Info.plist */; };
+		F4F9405C1F33018900A68570 /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F940501F33018900A68570 /* CaptureViewController.swift */; };
+		F4F9405D1F33018900A68570 /* GalleryImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F940511F33018900A68570 /* GalleryImageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F40D45F71F0E0A0C00752B61 /* AVFoundationExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AVFoundationExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F40D45FA1F0E0A0C00752B61 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F40D45FF1F0E0A0D00752B61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		F40D46011F0E0A0D00752B61 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		F40D46041F0E0A0D00752B61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		F40D46061F0E0A0D00752B61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F40D45F71F0E0A0C00752B61 /* BRSCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BRSCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F40D460D1F0E0A2D00752B61 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F40D46131F0E422400752B61 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
-		F43994A61F160B2800096217 /* CameraFocusSquareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFocusSquareView.swift; sourceTree = "<group>"; };
-		F43994A81F160B2800096217 /* CaptureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureViewController.swift; sourceTree = "<group>"; };
-		F43994A91F160B2800096217 /* GalleryImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryImageViewController.swift; sourceTree = "<group>"; };
-		F43994AD1F160B4F00096217 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
-		F44A93D11F25C3B90007805A /* PreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
-		F459DC041F2077CE00EFBAAE /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		F45F40CD1F1F146100A77719 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		F45F40CF1F1F146900A77719 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
-		F47082E71F28571C00BFF60D /* FilterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCell.swift; sourceTree = "<group>"; };
+		F4F940411F33018900A68570 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F4F940421F33018900A68570 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F4F940441F33018900A68570 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F4F940461F33018900A68570 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F4F940481F33018900A68570 /* FilterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCell.swift; sourceTree = "<group>"; };
+		F4F940491F33018900A68570 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		F4F9404B1F33018900A68570 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		F4F9404C1F33018900A68570 /* CameraFocusSquareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFocusSquareView.swift; sourceTree = "<group>"; };
+		F4F9404D1F33018900A68570 /* PreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
+		F4F9404E1F33018900A68570 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F4F940501F33018900A68570 /* CaptureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureViewController.swift; sourceTree = "<group>"; };
+		F4F940511F33018900A68570 /* GalleryImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryImageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +63,7 @@
 		F40D45EE1F0E0A0C00752B61 = {
 			isa = PBXGroup;
 			children = (
-				F40D45F91F0E0A0C00752B61 /* AVFoundationExample */,
+				F4F940401F33018900A68570 /* BRSCamera */,
 				F40D45F81F0E0A0C00752B61 /* Products */,
 				F40D460C1F0E0A2D00752B61 /* Frameworks */,
 			);
@@ -71,24 +72,9 @@
 		F40D45F81F0E0A0C00752B61 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F40D45F71F0E0A0C00752B61 /* AVFoundationExample.app */,
+				F40D45F71F0E0A0C00752B61 /* BRSCamera.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		F40D45F91F0E0A0C00752B61 /* AVFoundationExample */ = {
-			isa = PBXGroup;
-			children = (
-				F40D45FA1F0E0A0C00752B61 /* AppDelegate.swift */,
-				F40D46031F0E0A0D00752B61 /* LaunchScreen.storyboard */,
-				F40D45FE1F0E0A0D00752B61 /* Main.storyboard */,
-				F43994A41F160B2800096217 /* Cells */,
-				F43994A51F160B2800096217 /* HelperClasses */,
-				F43994A71F160B2800096217 /* ViewControllers */,
-				F40D46011F0E0A0D00752B61 /* Assets.xcassets */,
-				F40D46061F0E0A0D00752B61 /* Info.plist */,
-			);
-			path = AVFoundationExample;
 			sourceTree = "<group>";
 		};
 		F40D460C1F0E0A2D00752B61 /* Frameworks */ = {
@@ -102,30 +88,45 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F43994A41F160B2800096217 /* Cells */ = {
+		F4F940401F33018900A68570 /* BRSCamera */ = {
 			isa = PBXGroup;
 			children = (
-				F43994AD1F160B4F00096217 /* ImageCollectionViewCell.swift */,
-				F47082E71F28571C00BFF60D /* FilterCollectionViewCell.swift */,
+				F4F940411F33018900A68570 /* AppDelegate.swift */,
+				F4F940421F33018900A68570 /* Assets.xcassets */,
+				F4F940431F33018900A68570 /* LaunchScreen.storyboard */,
+				F4F940451F33018900A68570 /* Main.storyboard */,
+				F4F940471F33018900A68570 /* Cells */,
+				F4F9404A1F33018900A68570 /* HelperClasses */,
+				F4F9404E1F33018900A68570 /* Info.plist */,
+				F4F9404F1F33018900A68570 /* ViewControllers */,
+			);
+			path = BRSCamera;
+			sourceTree = "<group>";
+		};
+		F4F940471F33018900A68570 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F4F940481F33018900A68570 /* FilterCollectionViewCell.swift */,
+				F4F940491F33018900A68570 /* ImageCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		F43994A51F160B2800096217 /* HelperClasses */ = {
+		F4F9404A1F33018900A68570 /* HelperClasses */ = {
 			isa = PBXGroup;
 			children = (
-				F43994A61F160B2800096217 /* CameraFocusSquareView.swift */,
-				F459DC041F2077CE00EFBAAE /* CameraController.swift */,
-				F44A93D11F25C3B90007805A /* PreviewView.swift */,
+				F4F9404B1F33018900A68570 /* CameraController.swift */,
+				F4F9404C1F33018900A68570 /* CameraFocusSquareView.swift */,
+				F4F9404D1F33018900A68570 /* PreviewView.swift */,
 			);
 			path = HelperClasses;
 			sourceTree = "<group>";
 		};
-		F43994A71F160B2800096217 /* ViewControllers */ = {
+		F4F9404F1F33018900A68570 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				F43994A81F160B2800096217 /* CaptureViewController.swift */,
-				F43994A91F160B2800096217 /* GalleryImageViewController.swift */,
+				F4F940501F33018900A68570 /* CaptureViewController.swift */,
+				F4F940511F33018900A68570 /* GalleryImageViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -133,9 +134,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F40D45F61F0E0A0C00752B61 /* AVFoundationExample */ = {
+		F40D45F61F0E0A0C00752B61 /* BRSCamera */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F40D46091F0E0A0D00752B61 /* Build configuration list for PBXNativeTarget "AVFoundationExample" */;
+			buildConfigurationList = F40D46091F0E0A0D00752B61 /* Build configuration list for PBXNativeTarget "BRSCamera" */;
 			buildPhases = (
 				F40D45F31F0E0A0C00752B61 /* Sources */,
 				F40D45F41F0E0A0C00752B61 /* Frameworks */,
@@ -145,9 +146,9 @@
 			);
 			dependencies = (
 			);
-			name = AVFoundationExample;
+			name = BRSCamera;
 			productName = AVFoundationExample;
-			productReference = F40D45F71F0E0A0C00752B61 /* AVFoundationExample.app */;
+			productReference = F40D45F71F0E0A0C00752B61 /* BRSCamera.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -167,7 +168,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F40D45F21F0E0A0C00752B61 /* Build configuration list for PBXProject "AVFoundationExample" */;
+			buildConfigurationList = F40D45F21F0E0A0C00752B61 /* Build configuration list for PBXProject "BRSCamera" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -180,7 +181,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F40D45F61F0E0A0C00752B61 /* AVFoundationExample */,
+				F40D45F61F0E0A0C00752B61 /* BRSCamera */,
 			);
 		};
 /* End PBXProject section */
@@ -190,9 +191,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F40D46051F0E0A0D00752B61 /* LaunchScreen.storyboard in Resources */,
-				F40D46021F0E0A0D00752B61 /* Assets.xcassets in Resources */,
-				F40D46001F0E0A0D00752B61 /* Main.storyboard in Resources */,
+				F4F9405B1F33018900A68570 /* Info.plist in Resources */,
+				F4F940551F33018900A68570 /* Main.storyboard in Resources */,
+				F4F940531F33018900A68570 /* Assets.xcassets in Resources */,
+				F4F940541F33018900A68570 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,34 +205,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F459DC051F2077CE00EFBAAE /* CameraController.swift in Sources */,
-				F40D45FB1F0E0A0C00752B61 /* AppDelegate.swift in Sources */,
-				F44A93D21F25C3B90007805A /* PreviewView.swift in Sources */,
-				F43994AE1F160B4F00096217 /* ImageCollectionViewCell.swift in Sources */,
-				F43994AB1F160B2800096217 /* CaptureViewController.swift in Sources */,
-				F43994AC1F160B2800096217 /* GalleryImageViewController.swift in Sources */,
-				F47082E81F28571C00BFF60D /* FilterCollectionViewCell.swift in Sources */,
-				F43994AA1F160B2800096217 /* CameraFocusSquareView.swift in Sources */,
+				F4F940571F33018900A68570 /* ImageCollectionViewCell.swift in Sources */,
+				F4F940561F33018900A68570 /* FilterCollectionViewCell.swift in Sources */,
+				F4F9405D1F33018900A68570 /* GalleryImageViewController.swift in Sources */,
+				F4F9405C1F33018900A68570 /* CaptureViewController.swift in Sources */,
+				F4F940581F33018900A68570 /* CameraController.swift in Sources */,
+				F4F940591F33018900A68570 /* CameraFocusSquareView.swift in Sources */,
+				F4F940521F33018900A68570 /* AppDelegate.swift in Sources */,
+				F4F9405A1F33018900A68570 /* PreviewView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		F40D45FE1F0E0A0D00752B61 /* Main.storyboard */ = {
+		F4F940431F33018900A68570 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				F40D45FF1F0E0A0D00752B61 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		F40D46031F0E0A0D00752B61 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F40D46041F0E0A0D00752B61 /* Base */,
+				F4F940441F33018900A68570 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		F4F940451F33018900A68570 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4F940461F33018900A68570 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -346,10 +348,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 5DM37TEFRF;
-				INFOPLIST_FILE = AVFoundationExample/Info.plist;
+				INFOPLIST_FILE = BRSCamera/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xminds.AVFoundationExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xminds.BRSCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -360,10 +362,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 5DM37TEFRF;
-				INFOPLIST_FILE = AVFoundationExample/Info.plist;
+				INFOPLIST_FILE = BRSCamera/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xminds.AVFoundationExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xminds.BRSCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -372,7 +374,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F40D45F21F0E0A0C00752B61 /* Build configuration list for PBXProject "AVFoundationExample" */ = {
+		F40D45F21F0E0A0C00752B61 /* Build configuration list for PBXProject "BRSCamera" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F40D46071F0E0A0D00752B61 /* Debug */,
@@ -381,7 +383,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F40D46091F0E0A0D00752B61 /* Build configuration list for PBXNativeTarget "AVFoundationExample" */ = {
+		F40D46091F0E0A0D00752B61 /* Build configuration list for PBXNativeTarget "BRSCamera" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F40D460A1F0E0A0D00752B61 /* Debug */,

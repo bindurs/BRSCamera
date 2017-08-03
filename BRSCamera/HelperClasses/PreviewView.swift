@@ -1,10 +1,8 @@
 //
 //  PreviewView.swift
-//  AVFoundationExample
+//  BRSCamera
 //
 //  Created by Bindu on 24/07/17.
-//  Copyright © 2017 Xminds. All rights reserved.
-//
 
 import UIKit
 import AVFoundation
