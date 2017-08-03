@@ -11,3 +11,5 @@ This project uses [Google Material Design](https://www.flaticon.com/authors/goog
 * [flash on](https://www.flaticon.com/free-icon/flash-on-indicator_60984)
 * [flash off](https://www.flaticon.com/free-icon/flash-off_61064)
 * [auto flash](https://www.flaticon.com/free-icon/automatic-flash-symbol_61130)
+* [Pause](https://www.flaticon.com/free-icon/pause-button_61219)
+
