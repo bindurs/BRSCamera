@@ -13,7 +13,6 @@ import Photos
 protocol CameraControllerDelegate{
     func getImageAfterImageSave()
     func capturedImage(image:UIImage)
-    func getCaptureDevice(device:AVCaptureDevice)
 }
 
 class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutputRecordingDelegate,AVCaptureVideoDataOutputSampleBufferDelegate {
@@ -43,12 +42,19 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
     var albumFound : Bool = false
     var resultImage : Any?
     var filteredImage : UIImage?
-    var flashController = FlashController()
+    
+    
     override init() {
         super.init()
         selectedFilter = nil
+        flashMode = .off
     }
-    
+    var flashMode : AVCaptureFlashMode? {
+        
+        willSet {
+            self.flashMode = newValue
+        }
+    }
     var selectedFilter: CIFilter? {
         
         willSet {
@@ -110,8 +116,6 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
         }
         session?.startRunning()
         createAlbum()
-        
-        delegate?.getCaptureDevice(device: captureDevice!)
         
         return session!
     }
@@ -289,16 +293,26 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
                 let previewPixelType = settings.availablePreviewPhotoPixelFormatTypes.first!
                 let previewFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType,kCVPixelBufferWidthKey as String: 160,kCVPixelBufferHeightKey as String: 160]
                 settings.previewPhotoFormat = previewFormat
-                
-                if (captureDevice?.torchMode == .auto) {
-                    settings.flashMode = .auto
-                } else if (captureDevice?.torchMode == .on) {
-                    settings.flashMode = .on
-                } else {
-                    settings.flashMode = .off
+              
+                do{
+                    try captureDevice?.lockForConfiguration()
+                    
+                    if (flashMode == .auto) {
+                        settings.flashMode = .auto
+                        captureDevice?.torchMode = .auto
+                    } else if (flashMode == .on) {
+                        settings.flashMode = .on
+                        captureDevice?.torchMode = .on
+                    } else {
+                        settings.flashMode = .off
+                        captureDevice?.torchMode = .off
+                    }
+                    captureDevice?.unlockForConfiguration()
+                } catch {
+                    //DISABLE FLASH BUTTON HERE IF ERROR
+                    print("Device tourch Flash Error ");
                 }
                 
-                flashController.toggleFlash(session: session!)
                 self.stillImageOutput?.capturePhoto(with: settings, delegate: self as AVCapturePhotoCaptureDelegate)
             }
         } else {
@@ -380,6 +394,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             
             let dataProvider = CGDataProvider(data: dataImage as CFData)
             let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+            print(cgImageRef ?? "")
             //                outputImage = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.right)
             
             saveImage()
@@ -391,6 +406,7 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
     func saveImage() {
         
         PHPhotoLibrary.shared().performChanges({
+            
             let assetRequest = PHAssetChangeRequest.creationRequestForAsset(from: self.filteredImage!)
             let assetPlaceholder = assetRequest.placeholderForCreatedAsset
             let albumChangeRequest = PHAssetCollectionChangeRequest(for: self.assetCollection)
@@ -403,7 +419,20 @@ class CameraController: NSObject,AVCapturePhotoCaptureDelegate,AVCaptureFileOutp
             print(error ?? "error")
         }
         
-        
     }
+    //MARK:- Camera Flash
     
+    func toggleFlash() {
+        
+        if (captureDevice?.hasTorch)! {
+            
+            if flashMode == .auto {
+                flashMode = .on
+            } else if (flashMode == .on) {
+                flashMode = .off
+            } else {
+                flashMode = .auto
+            }
+        }
+    }
 }

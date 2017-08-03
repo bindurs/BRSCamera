@@ -89,7 +89,8 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     @IBOutlet var filterCollectionview: UICollectionView!
     
     var camFocus : CameraFocusSquareView?
-    var cameraController : CameraController?
+    var cameraController = CameraController()
+    
     var session : AVCaptureSession?
     
     var touchPoint : CGPoint?
@@ -113,10 +114,9 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         
         // Do any additional setup after loading the view.
         
-        cameraController = CameraController()
-        cameraController?.delegate = self
+        cameraController.delegate = self
         
-        session = cameraController?.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
+        session = cameraController.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
         
         getImageAfterImageSave()
         photoLibrarybutton.layer.cornerRadius = photoLibrarybutton.frame.size.width/2
@@ -138,18 +138,6 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     }
     
     // MARK:- Methods
-    
-    func getCaptureDevice(device : AVCaptureDevice) {
-        
-        if (device.torchMode == .auto) {
-            flashButton.setImage(#imageLiteral(resourceName: "auto_flash"), for: UIControlState.normal)
-        } else if (device.torchMode == .on) {
-            flashButton.setImage(#imageLiteral(resourceName: "flash_on"), for: UIControlState.normal)
-        } else {
-            flashButton.setImage(#imageLiteral(resourceName: "flash_off"), for: UIControlState.normal)
-        }
-        
-    }
     
     func focus(aPoint:CGPoint) {
         
@@ -198,7 +186,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     
     func getImageAfterImageSave() {
         
-        cameraController?.getLastImageFromAlbum(Success: { (data) -> Void in
+        cameraController.getLastImageFromAlbum(Success: { (data) -> Void in
             
             self.photoLibraryImageView.image =  data as UIImage
             self.photoLibraryImageView.isHidden = false
@@ -224,10 +212,10 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     
     @IBAction func swapBtnPressed(_ sender: UIButton) {
         
-        cameraController?.delegate = self
+        cameraController.delegate = self
         session?.stopRunning()
         
-        session = cameraController?.setupCamera(withPhoto: !isPhoto, isFrontCamera: isFrontCamera)
+        session = cameraController.setupCamera(withPhoto: !isPhoto, isFrontCamera: isFrontCamera)
         
         if isPhoto {
             sender.setImage(#imageLiteral(resourceName: "camera"), for: UIControlState.normal)
@@ -250,7 +238,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         
         isFrontCamera = !isFrontCamera
         session?.stopRunning()
-        session = cameraController?.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
+        session = cameraController.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
         
         if isPhoto {
             previewImage.isHidden = false
@@ -293,8 +281,6 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         isSelected = !isSelected
     }
     
-    
-    
     @IBAction func captureBtnClicked(_ sender: UIButton) {
         
         if isPhoto {
@@ -302,7 +288,7 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
             captureView.videoPreviewLayer.connection.isEnabled = false
             
             let popTime =  DispatchTime.now() + 2.0
-            cameraController?.capture()
+            cameraController.capture()
             DispatchQueue.main.asyncAfter(deadline: popTime) {
                 self.captureView.videoPreviewLayer.connection.isEnabled = true
             }
@@ -310,13 +296,13 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
             
             let popTime =  DispatchTime.now() + 2.0
             
-            if (cameraController?.videoOutput?.isRecording)!{
+            if (cameraController.videoOutput?.isRecording)!{
                 //Change camera button for video recording
                 DispatchQueue.main.asyncAfter(deadline: popTime) {
                     self.captureView.videoPreviewLayer.connection.isEnabled = true
                     
                 }
-                cameraController?.videoOutput?.stopRecording()
+                cameraController.videoOutput?.stopRecording()
                 invalidateTimer()
                 self.recoderTimeLabel.isHidden = true
                 
@@ -332,12 +318,22 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
                 
                 timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerOnVideoCapture(timer:)), userInfo: nil, repeats: true)
                 timer?.fire()
-                cameraController?.capture()
+                cameraController.capture()
             }
         }
     }
     
     @IBAction func flashBtnClicked(_ sender: UIButton) {
+        
+        cameraController.toggleFlash()
+        if (cameraController.flashMode == .auto) {
+            flashButton.setImage(#imageLiteral(resourceName: "auto_flash"), for: UIControlState.normal)
+        } else if (cameraController.flashMode == .on) {
+            flashButton.setImage(#imageLiteral(resourceName: "flash_on"), for: UIControlState.normal)
+        } else {
+            flashButton.setImage(#imageLiteral(resourceName: "flash_off"), for: UIControlState.normal)
+        }
+        
     }
     //MARK: - Shows alert when image is saved
     func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafeRawPointer) {
@@ -414,11 +410,11 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if (indexPath.row == 0) {
-            cameraController?.selectedFilter = nil
+            cameraController.selectedFilter = nil
         } else {
             session?.stopRunning()
-            session =  cameraController?.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
-            cameraController?.selectedFilter = filterTypeArray[indexPath.row-1]!
+            session =  cameraController.setupCamera(withPhoto: isPhoto, isFrontCamera: isFrontCamera)
+            cameraController.selectedFilter = filterTypeArray[indexPath.row-1]!
         }
         
     }
@@ -435,11 +431,11 @@ class CaptureViewController: UIViewController ,UIImagePickerControllerDelegate,U
         // Pass the selected object to the new view controller.
         
         let vc :GalleryImageViewController = segue.destination as! GalleryImageViewController
-        vc.assetCollection = cameraController?.assetCollection
+        vc.assetCollection = cameraController.assetCollection
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
 }
